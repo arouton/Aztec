@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{313BE9D0-4034-4153-A9AA-35245B8DA2A1}</ProjectGuid>
+    <RootNamespace>Aztec</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(ProjectDir)..\Bin\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IntDir>$(ProjectDir)..\Obj\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(ProjectDir)..\Bin\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IntDir>$(ProjectDir)..\Obj\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\Src\;$(ProjectDir)..\Ext\Include\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;$(ProjectDir)..\Ext\Lib\Cg\cg.lib;$(ProjectDir)..\Ext\Lib\Cg\cgGL.lib;$(ProjectDir)..\Ext\Lib\FreeImage\FreeImage.lib;$(ProjectDir)..\Ext\Lib\FreeImage\FreeImagePlus.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\Src\;$(ProjectDir)..\Ext\Include\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>opengl32.lib;Cg\cg.lib;Cg\cgGL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Ext\Lib\</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Src\azIApplication.cpp" />
+    <ClCompile Include="..\Src\azCommon.cpp" />
+    <ClCompile Include="..\Src\azMain.cpp" />
+    <ClCompile Include="..\Src\main.cpp" />
+    <ClCompile Include="..\Src\Memory\azMemoryManager.cpp" />
+    <ClCompile Include="..\Src\Object\azClassId.cpp" />
+    <ClCompile Include="..\Src\Object\azClassManager.cpp" />
+    <ClCompile Include="..\Src\Object\azFactory.cpp" />
+    <ClCompile Include="..\Src\Object\azIObject.cpp" />
+    <ClCompile Include="..\Src\Object\azMetaClass.cpp" />
+    <ClCompile Include="..\Src\Object\azMetaClassRegistrer.cpp" />
+    <ClCompile Include="..\Src\Object\azTestObject.cpp" />
+    <ClCompile Include="..\Src\Render\azGlInputLayout.cpp" />
+    <ClCompile Include="..\Src\Render\azGlRenderEnums.cpp" />
+    <ClCompile Include="..\Src\Render\azGlRenderer.cpp" />
+    <ClCompile Include="..\Src\Render\azGlShader.cpp" />
+    <ClCompile Include="..\Src\Render\azIInputLayout.cpp" />
+    <ClCompile Include="..\Src\Render\azImage.cpp" />
+    <ClCompile Include="..\Src\Render\azIRenderer.cpp" />
+    <ClCompile Include="..\Src\Render\azIGpuBuffer.cpp" />
+    <ClCompile Include="..\Src\Render\azIShader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Src\azIApplication.h" />
+    <ClInclude Include="..\Src\azCommon.h" />
+    <ClInclude Include="..\Src\azMain.h" />
+    <ClInclude Include="..\Src\azMemory.h" />
+    <ClInclude Include="..\Src\Math\azMatrix4x4.h" />
+    <ClInclude Include="..\Src\Math\azVector3.h" />
+    <ClInclude Include="..\Src\Math\azVector4.h" />
+    <ClInclude Include="..\Src\Memory\azMemoryManager.h" />
+    <ClInclude Include="..\Src\Object\azCast.h" />
+    <ClInclude Include="..\Src\Object\azClassId.h" />
+    <ClInclude Include="..\Src\Object\azClassManager.h" />
+    <ClInclude Include="..\Src\Object\azFactory.h" />
+    <ClInclude Include="..\Src\Object\azIObject.h" />
+    <ClInclude Include="..\Src\Object\azMetaClass.h" />
+    <ClInclude Include="..\Src\Object\azMetaClassRegistrer.h" />
+    <ClInclude Include="..\Src\Object\azObjectMacros.h" />
+    <ClInclude Include="..\Src\Object\azTestObject.h" />
+    <ClInclude Include="..\Src\Render\azGlShader.h" />
+    <ClInclude Include="..\Src\Render\azIInputLayout.h" />
+    <ClInclude Include="..\Src\Render\azGlInputLayout.h" />
+    <ClInclude Include="..\Src\Render\azGlRenderEnums.h" />
+    <ClInclude Include="..\Src\Render\azGlGpuBuffer.h" />
+    <ClInclude Include="..\Src\Render\azGlRenderer.h" />
+    <ClInclude Include="..\Src\Render\azIGpuBuffer.h" />
+    <ClInclude Include="..\Src\Render\azImage.h" />
+    <ClInclude Include="..\Src\Render\azIRenderer.h" />
+    <ClInclude Include="..\Src\Render\azIShader.h" />
+    <ClInclude Include="..\Src\Render\azRenderEnums.h" />
+    <ClInclude Include="..\Src\Toolkit\azRef.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Src\Math\azMatrix4x4.inl" />
+    <None Include="..\Src\Math\azVector3.inl" />
+    <None Include="..\Src\Math\azVector4.inl" />
+    <None Include="..\Src\Object\azFactory.inl" />
+    <None Include="..\Src\Render\azGlGpuBuffer.inl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\Src\azIApplication.cpp" />
+    <ClCompile Include="..\Src\azCommon.cpp" />
+    <ClCompile Include="..\Src\azMain.cpp" />
+    <ClCompile Include="..\Src\main.cpp" />
+    <ClCompile Include="..\Src\Render\azGlRenderEnums.cpp">
+      <Filter>Render\Gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Render\azGlInputLayout.cpp">
+      <Filter>Render\Gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Render\azGlRenderer.cpp">
+      <Filter>Render\Gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Render\azGlShader.cpp">
+      <Filter>Render\Gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Render\azIGpuBuffer.cpp">
+      <Filter>Render\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Render\azIInputLayout.cpp">
+      <Filter>Render\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Render\azIRenderer.cpp">
+      <Filter>Render\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Render\azIShader.cpp">
+      <Filter>Render\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Render\azImage.cpp">
+      <Filter>Render\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Object\azIObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Object\azFactory.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Object\azMetaClass.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Memory\azMemoryManager.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Object\azTestObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Object\azClassManager.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Object\azMetaClassRegistrer.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Object\azClassId.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Src\azCommon.h" />
+    <ClInclude Include="..\Src\azMain.h" />
+    <ClInclude Include="..\Src\azMemory.h" />
+    <ClInclude Include="..\Src\Render\azGlGpuBuffer.h">
+      <Filter>Render\Gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Render\azGlInputLayout.h">
+      <Filter>Render\Gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Render\azGlRenderEnums.h">
+      <Filter>Render\Gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Render\azGlRenderer.h">
+      <Filter>Render\Gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Render\azGlShader.h">
+      <Filter>Render\Gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Render\azIShader.h">
+      <Filter>Render\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Render\azIGpuBuffer.h">
+      <Filter>Render\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Render\azIInputLayout.h">
+      <Filter>Render\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Render\azIRenderer.h">
+      <Filter>Render\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Math\azMatrix4x4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Math\azVector3.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Math\azVector4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Render\azRenderEnums.h">
+      <Filter>Render\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\azIApplication.h" />
+    <ClInclude Include="..\Src\Render\azImage.h">
+      <Filter>Render\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Toolkit\azRef.h">
+      <Filter>Toolkit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Object\azFactory.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Object\azIObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Object\azMetaClass.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Object\azCast.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Memory\azMemoryManager.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Object\azTestObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Object\azClassManager.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Object\azObjectMacros.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Object\azMetaClassRegistrer.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Object\azClassId.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Src\Render\azGlGpuBuffer.inl">
+      <Filter>Render\Gl</Filter>
+    </None>
+    <None Include="..\Src\Math\azMatrix4x4.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\Src\Math\azVector3.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\Src\Math\azVector4.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\Src\Object\azFactory.inl">
+      <Filter>Object</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Render">
+      <UniqueIdentifier>{201ae5a7-6e0e-4444-8156-579eacefe87e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\Gl">
+      <UniqueIdentifier>{d648842d-c007-4b99-bd0e-49b28002dec0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\Interface">
+      <UniqueIdentifier>{4e2bbbfc-1894-45b5-81dc-cfe1fb67812e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{27d2cabd-90df-4f53-a886-b8c7bd500c76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Toolkit">
+      <UniqueIdentifier>{dcfbd734-ed54-445e-a965-f72959350989}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{79600ab9-d344-43ec-ad4c-714275c2694c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{65beb51b-d191-4cf2-8c1f-f033e2c60a14}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
