@@ -1,0 +1,11 @@
+struct azOutput
+{
+  float4 color : COLOR;
+};
+
+azOutput main(float4 color : COLOR)
+{
+  azOutput OUT;
+  OUT.color = float4(0,1,1,0);
+  return OUT;
+}

@@ -1,0 +1,15 @@
+struct azOutput
+{
+  float4 m_f4Position : POSITION;
+  float3 f_f3color : COLOR;
+};
+
+azOutput main(uniform float4x4 a_mModelProjMatrix, in float4 a_f4Position : POSITION)
+{	
+  azOutput oOutput;
+
+  oOutput.m_f4Position = mul(a_mModelProjMatrix, a_f4Position);
+  oOutput.f_f3color = float3(1,1,0);
+
+  return oOutput;	
+}
