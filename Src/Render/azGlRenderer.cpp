@@ -6,6 +6,7 @@
 #include "Render/azGlShader.h"
 #include "Math/azMatrix4x4.h"
 #include <Cg/cgGL.h>
+#include "Memory/azMemoryManager.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 // OpenGL extensions
@@ -192,9 +193,9 @@ void azGlRenderer::EndScene()
 //----------------------------------------------------------------------------------------------------------------------
 azIGpuBuffer& azGlRenderer::CreateVertexBuffer(azUInt a_uSize, azEBufferType::Enum a_eBufferType)
 {
-	azGlVertexBuffer* pBuffer = new azGlVertexBuffer();
-	pBuffer->Initialize(a_uSize, a_eBufferType);
-	return *pBuffer;
+	azGlVertexBuffer& rBuffer = azNew(azGlVertexBuffer);
+	rBuffer.Initialize(a_uSize, a_eBufferType);
+	return rBuffer;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -202,9 +203,9 @@ azIGpuBuffer& azGlRenderer::CreateVertexBuffer(azUInt a_uSize, azEBufferType::En
 //----------------------------------------------------------------------------------------------------------------------
 azIGpuBuffer& azGlRenderer::CreateIndexBuffer(azUInt a_uSize, azEBufferType::Enum a_eBufferType)
 {
-	azGlIndexBuffer* pBuffer = new azGlIndexBuffer();
-	pBuffer->Initialize(a_uSize, a_eBufferType);
-	return *pBuffer;
+	azGlIndexBuffer& rBuffer = azNew(azGlIndexBuffer);
+	rBuffer.Initialize(a_uSize, a_eBufferType);
+	return rBuffer;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -212,8 +213,8 @@ azIGpuBuffer& azGlRenderer::CreateIndexBuffer(azUInt a_uSize, azEBufferType::Enu
 //----------------------------------------------------------------------------------------------------------------------
 azIInputLayout& azGlRenderer::CreateInputLayout()
 {
-	azGlInputLayout* pInputLayout = new azGlInputLayout();
-	return *pInputLayout;
+	azGlInputLayout& rInputLayout = azNew(azGlInputLayout);
+	return rInputLayout;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -221,13 +222,13 @@ azIInputLayout& azGlRenderer::CreateInputLayout()
 //----------------------------------------------------------------------------------------------------------------------
 azIShader& azGlRenderer::CreateVertexShader()
 {
-	azGlShader* pShader = new azGlShader();
+	azGlShader& rShader = azNew(azGlShader);
 
 	azSz szFilename = azL("F://Dev//Aztec//Bin//Debug//Shaders//Simple.vcg");
 	CGprogram pProgram = cgCreateProgramFromFile(m_pCgContext, CG_SOURCE, szFilename, m_eVertexShaderProfile, azL("main"), NULL);
-	pShader->Initialize(pProgram);
+	rShader.Initialize(pProgram);
 
-	return *pShader;
+	return rShader;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -235,13 +236,13 @@ azIShader& azGlRenderer::CreateVertexShader()
 //----------------------------------------------------------------------------------------------------------------------
 azIShader& azGlRenderer::CreatePixelShader()
 {
-	azGlShader* pShader = new azGlShader();
+	azGlShader& rShader = azNew(azGlShader);
 
 	azSz szFilename = azL("F://Dev//Aztec//Bin//Debug//Shaders//Simple.pcg");
 	CGprogram pProgram = cgCreateProgramFromFile(m_pCgContext, CG_SOURCE, szFilename, m_ePixelShaderProfile, azL("main"), NULL);
-	pShader->Initialize(pProgram);
+	rShader.Initialize(pProgram);
 
-	return *pShader;
+	return rShader;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

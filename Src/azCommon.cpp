@@ -32,6 +32,7 @@ void azPrint(const azChar* a_szFormat, ...)
     va_start(oArgs, a_szFormat);
     azChar szBuffer[1024];
 	vsnprintf_s(szBuffer, 1024, 1024, a_szFormat, oArgs);
+    strcat_s(szBuffer, 1024, "\n");
 	OutputDebugString(szBuffer);
     va_end(oArgs);
 }

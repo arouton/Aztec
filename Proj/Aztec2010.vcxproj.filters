@@ -56,11 +56,13 @@
     <ClCompile Include="..\Src\Object\azClassId.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Memory\azStackWalker.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Src\azCommon.h" />
     <ClInclude Include="..\Src\azMain.h" />
-    <ClInclude Include="..\Src\azMemory.h" />
     <ClInclude Include="..\Src\Render\azGlGpuBuffer.h">
       <Filter>Render\Gl</Filter>
     </ClInclude>
@@ -136,6 +138,9 @@
     </ClInclude>
     <ClInclude Include="..\Src\Object\azClassId.h">
       <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Memory\azStackWalker.h">
+      <Filter>Memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

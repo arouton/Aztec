@@ -55,8 +55,12 @@ inline void* azGlGpuBuffer<t_Type>::Lock(azUInt a_uOffset, azUInt a_uSize, azELo
 {
     azGlRenderer::glBindBufferARB(t_Type, m_uBufferId);
 
+    // This code ditches previous data ?
+    //azGlRenderer::glBufferDataARB(t_Type, m_uSize, NULL, azGlRenderEnums::GetNativeBufferType(azEBufferType::eDynamic));
+
 	GLenum eLockType = azGlRenderEnums::GetNativeLockType(a_eLockType);
-    unsigned char* pBuffer = reinterpret_cast<unsigned char*>(azGlRenderer::glMapBufferARB(t_Type, eLockType));
+    azUInt8* pBuffer = reinterpret_cast<azUInt8*>(azGlRenderer::glMapBufferARB(t_Type, eLockType));
+    azAssert(pBuffer != NULL, "Couldn't lock GpuBUffer");
     
 	return pBuffer + a_uOffset;
 }

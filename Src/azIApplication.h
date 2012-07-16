@@ -3,6 +3,7 @@
 
 #include <windows.h>
 #include "azCommon.h"
+#include "Toolkit/azRef.h"
 
 class azIRenderer;
 class azIGpuBuffer;
@@ -14,13 +15,6 @@ class azIShader;
 class AZ_API azIApplication
 {
 public:
-	// \brief Default constructor
-	azIApplication();
-
-	// \brief Destructor
-	virtual ~azIApplication() {}
-
-
 	// \brief Initialize application
 	virtual void Initialize();
 
@@ -33,13 +27,13 @@ public:
 
 private:
 	// The renderer instance
-	azIRenderer* m_pRenderer;
+	azRef<azIRenderer> m_rRenderer;
 
 	// Temp
-	azIGpuBuffer* m_pVertexBuffer;
-	azIInputLayout* m_pInputLayout;
-	azIShader* m_pVertexShader;
-	azIShader* m_pPixelShader;
+	azRef<azIGpuBuffer> m_rVertexBuffer;
+	azRef<azIInputLayout> m_rInputLayout;
+	azRef<azIShader> m_rVertexShader;
+	azRef<azIShader> m_rPixelShader;
 };
 
 #endif // __azApplication__

@@ -21,7 +21,7 @@ void azIGpuBuffer::Initialize(azUInt a_uSize)
 //----------------------------------------------------------------------------------------------------------------------
 void azIGpuBuffer::Fill(const void* a_pData, azUInt a_uSize)
 {
-	void* pBuffer = Lock();
+	void* pBuffer = Lock(0, a_uSize, azELockType::eWriteOnly);
 	memcpy(pBuffer, a_pData, a_uSize);
     Unlock();
 }

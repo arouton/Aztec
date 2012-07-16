@@ -4,12 +4,12 @@ struct azOutput
   float3 f_f3color : COLOR;
 };
 
-azOutput main(uniform float4x4 a_mModelProjMatrix, in float4 a_f4Position : POSITION)
+azOutput main(uniform float4x4 a_mModelProjMatrix, in float4 a_f4Position : POSITION, in float4 a_f4Color : COLOR)
 {	
   azOutput oOutput;
 
   oOutput.m_f4Position = mul(a_mModelProjMatrix, a_f4Position);
-  oOutput.f_f3color = float3(1,1,0);
+  oOutput.f_f3color = a_f4Color;
 
   return oOutput;	
 }

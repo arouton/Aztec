@@ -1,9 +1,8 @@
 #ifndef __azObjectMacros__
 #define __azObjectMacros__
 
-#include "Object/azMetaClassRegistrer.h"
 #include "Object/azMetaClass.h"
-
+#include "Object/azMetaClassRegistrer.h"
 
 // \class azConstructorDestructorHelper
 template <class t_Class>

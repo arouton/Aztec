@@ -2,6 +2,7 @@
 #include "Render/azIGpuBuffer.h"
 #include "Render/azIInputLayout.h"
 #include "Render/azIShader.h"
+#include "Memory/azMemoryManager.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -65,7 +66,7 @@ void azIRenderer::SetVertexBuffer(azUInt a_uSlot, const azIGpuBuffer& a_rBuffer)
 void azIRenderer::DestroyVertexBuffer(azIGpuBuffer& a_rBuffer)
 {
 	a_rBuffer.Terminate();
-	delete (&a_rBuffer);
+	azDelete(a_rBuffer);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -82,7 +83,7 @@ void azIRenderer::SetIndexBuffer(const azIGpuBuffer& a_rBuffer)
 void azIRenderer::DestroyIndexBuffer(azIGpuBuffer& a_rBuffer)
 {
 	a_rBuffer.Terminate();
-	delete (&a_rBuffer);
+	azDelete(a_rBuffer);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -99,7 +100,7 @@ void azIRenderer::SetInputLayout(azIInputLayout const& a_rInputLayout)
 void azIRenderer::DestroyInputLayout(azIInputLayout& a_rInputLayout)
 {
 	a_rInputLayout.Terminate();
-	delete (&a_rInputLayout);
+	azDelete(a_rInputLayout);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -116,7 +117,7 @@ void azIRenderer::SetVertexShader(azIShader& a_rShader)
 void azIRenderer::DestroyVertexShader(azIShader& a_rShader)
 {
 	a_rShader.Terminate();
-	delete (&a_rShader);
+	azDelete(a_rShader);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -133,7 +134,7 @@ void azIRenderer::SetPixelShader(azIShader& a_rShader)
 void azIRenderer::DestroyPixelShader(azIShader& a_rShader)
 {
 	a_rShader.Terminate();
-	delete (&a_rShader);
+	azDelete(a_rShader);
 }
 
 

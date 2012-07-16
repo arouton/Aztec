@@ -6,6 +6,6 @@ struct azOutput
 azOutput main(float4 color : COLOR)
 {
   azOutput OUT;
-  OUT.color = float4(0,1,1,0);
+  OUT.color = color;
   return OUT;
 }

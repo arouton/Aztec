@@ -1,7 +1,7 @@
 Obj/
-Bin/*.exe
-Bin/*.pdb
-Bin/*.ilk
+Bin/Debug/*.exe
+Bin/Debug/*.pdb
+Bin/Debug/*.ilk
 
 #################
 ## Visual Studio

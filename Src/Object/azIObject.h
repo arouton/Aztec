@@ -1,7 +1,7 @@
 #ifndef __azIObject__
 #define __azIObject__
 
-#include "azObjectMacros.h"
+#include "Object/azObjectMacros.h"
 
 class azMetaClass;
 

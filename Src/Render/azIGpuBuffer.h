@@ -28,7 +28,7 @@ public :
 
 
 	// \brief Lock the buffer
-	virtual void* Lock(azUInt a_uOffset = 0, azUInt a_uSize = 0, azELockType::Enum a_eLockType = azELockType::eWriteOnly) = 0;
+	virtual void* Lock(azUInt a_uOffset, azUInt a_uSize, azELockType::Enum a_eLockType) = 0;
 
 	// \brief Unlock the buffer
 	virtual void Unlock() = 0;

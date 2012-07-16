@@ -6,8 +6,18 @@
 //----------------------------------------------------------------------------------------------------------------------
 GLenum azGlRenderEnums::GetNativeBufferType(azEBufferType::Enum a_eBufferType)
 {
-	// \todo
-	return GL_STATIC_DRAW_ARB;
+    switch(a_eBufferType)
+    {
+        case azEBufferType::eStatic :
+        {
+    	    return GL_STATIC_DRAW_ARB;
+        }
+        case azEBufferType::eDynamic :
+        {
+            return GL_STREAM_DRAW_ARB;
+        }
+        azNoDefaultReturn(GLenum);
+    }
 }
 	
 //----------------------------------------------------------------------------------------------------------------------
