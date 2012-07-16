@@ -12,6 +12,7 @@
 #include "Object/azFactory.h"
 #include "Memory/azMemoryManager.h"
 
+#include "File/azCrtFile.h"
 
 struct azVertex
 {
@@ -48,8 +49,12 @@ void azIApplication::Initialize()
 	m_rInputLayout.GetRef().AddElement(0, azInputLayoutElement(azESemanticType::ePosition, 0, azEFormatType::eFloat3, sizeof(azVertex), 0));
 	m_rInputLayout.GetRef().AddElement(0, azInputLayoutElement(azESemanticType::eDiffuse, 0, azEFormatType::eColor, sizeof(azVertex), 3*sizeof(azFloat)));
 
-	m_rVertexShader = rRenderer.CreateVertexShader();
-	m_rPixelShader = rRenderer.CreatePixelShader();
+    azCrtFile oVertexShaderFile;
+    oVertexShaderFile.Open(azFilePath(azL("Shaders\\Simple.vcg")), azFileOpenParams(azEReadWriteMode::eRead));
+    oVertexShaderFile.Close();
+
+	m_rVertexShader = rRenderer.CreateVertexShader(azL("Shaders\\Simple.vcg"));
+	m_rPixelShader = rRenderer.CreatePixelShader(azL("Shaders\\Simple.vcg"));
 
     // Initialize projection matrix
 	azMatrix4x4 oProjectionMatrix;

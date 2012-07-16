@@ -46,10 +46,10 @@ public:
 	virtual azIInputLayout& CreateInputLayout();
 
 	// \brief Create vertex shader
-	virtual azIShader& CreateVertexShader() ;
+	virtual azIShader& CreateVertexShader(azSz a_szProgram);
 
 	// \brief Create pixel shader
-	virtual azIShader& CreatePixelShader();
+	virtual azIShader& CreatePixelShader(azSz a_szProgram);
 
 
 	// \brief Load matrix

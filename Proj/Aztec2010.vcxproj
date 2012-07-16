@@ -81,6 +81,8 @@
     <ClCompile Include="..\Src\azIApplication.cpp" />
     <ClCompile Include="..\Src\azCommon.cpp" />
     <ClCompile Include="..\Src\azMain.cpp" />
+    <ClCompile Include="..\Src\File\azCrtFile.cpp" />
+    <ClCompile Include="..\Src\File\azFilePath.cpp" />
     <ClCompile Include="..\Src\main.cpp" />
     <ClCompile Include="..\Src\Memory\azMemoryManager.cpp" />
     <ClCompile Include="..\Src\Memory\azStackWalker.cpp" />
@@ -105,6 +107,9 @@
     <ClInclude Include="..\Src\azIApplication.h" />
     <ClInclude Include="..\Src\azCommon.h" />
     <ClInclude Include="..\Src\azMain.h" />
+    <ClInclude Include="..\Src\File\azCrtFile.h" />
+    <ClInclude Include="..\Src\File\azFilePath.h" />
+    <ClInclude Include="..\Src\File\azIFile.h" />
     <ClInclude Include="..\Src\Math\azMatrix4x4.h" />
     <ClInclude Include="..\Src\Math\azVector3.h" />
     <ClInclude Include="..\Src\Math\azVector4.h" />

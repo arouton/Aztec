@@ -220,12 +220,11 @@ azIInputLayout& azGlRenderer::CreateInputLayout()
 //----------------------------------------------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------------------------------------------
-azIShader& azGlRenderer::CreateVertexShader()
+azIShader& azGlRenderer::CreateVertexShader(azSz a_szProgram)
 {
 	azGlShader& rShader = azNew(azGlShader);
 
-	azSz szFilename = azL("F://Dev//Aztec//Bin//Debug//Shaders//Simple.vcg");
-	CGprogram pProgram = cgCreateProgramFromFile(m_pCgContext, CG_SOURCE, szFilename, m_eVertexShaderProfile, azL("main"), NULL);
+	CGprogram pProgram = cgCreateProgram(m_pCgContext, CG_SOURCE, a_szProgram, m_eVertexShaderProfile, azL("main"), NULL);
 	rShader.Initialize(pProgram);
 
 	return rShader;
@@ -234,12 +233,11 @@ azIShader& azGlRenderer::CreateVertexShader()
 //----------------------------------------------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------------------------------------------
-azIShader& azGlRenderer::CreatePixelShader()
+azIShader& azGlRenderer::CreatePixelShader(azSz a_szProgram)
 {
 	azGlShader& rShader = azNew(azGlShader);
 
-	azSz szFilename = azL("F://Dev//Aztec//Bin//Debug//Shaders//Simple.pcg");
-	CGprogram pProgram = cgCreateProgramFromFile(m_pCgContext, CG_SOURCE, szFilename, m_ePixelShaderProfile, azL("main"), NULL);
+	CGprogram pProgram = cgCreateProgram(m_pCgContext, CG_SOURCE, a_szProgram, m_ePixelShaderProfile, azL("main"), NULL);
 	rShader.Initialize(pProgram);
 
 	return rShader;

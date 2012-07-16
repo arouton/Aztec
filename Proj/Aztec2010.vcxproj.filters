@@ -59,6 +59,12 @@
     <ClCompile Include="..\Src\Memory\azStackWalker.cpp">
       <Filter>Memory</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\File\azCrtFile.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\File\azFilePath.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Src\azCommon.h" />
@@ -142,6 +148,15 @@
     <ClInclude Include="..\Src\Memory\azStackWalker.h">
       <Filter>Memory</Filter>
     </ClInclude>
+    <ClInclude Include="..\Src\File\azCrtFile.h">
+      <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\File\azIFile.h">
+      <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\File\azFilePath.h">
+      <Filter>File</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Src\Render\azGlGpuBuffer.inl">
@@ -181,6 +196,9 @@
     </Filter>
     <Filter Include="Memory">
       <UniqueIdentifier>{65beb51b-d191-4cf2-8c1f-f033e2c60a14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File">
+      <UniqueIdentifier>{4934935e-91e0-4fd0-83ae-834b134c3981}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
