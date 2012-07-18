@@ -42,7 +42,7 @@ void azIApplication::Initialize()
 		{ 200.f,  100.f, 0.f, 0xFFFFFFFF}
 	};
 
-	m_rVertexBuffer = rRenderer.CreateVertexBuffer(4 * sizeof(azVertex), azEBufferType::eDynamic);
+	m_rVertexBuffer = rRenderer.CreateVertexBuffer(4 * sizeof(azVertex), azEBufferType::eStatic);
 	m_rVertexBuffer.GetRef().Fill(aVertices, 4 * sizeof(azVertex));
 
 	m_rInputLayout = rRenderer.CreateInputLayout();
@@ -50,43 +50,37 @@ void azIApplication::Initialize()
 	m_rInputLayout.GetRef().AddElement(0, azInputLayoutElement(azESemanticType::eDiffuse, 0, azEFormatType::eColor, sizeof(azVertex), 3*sizeof(azFloat)));
 
     azCrtFile oVertexShaderFile;
-    oVertexShaderFile.Open(azFilePath(azL("Shaders\\Simple.vcg")), azFileOpenParams(azEReadWriteMode::eRead));
+    oVertexShaderFile.Open(azFilePath(azL("Shaders\\Simple.vcg")), azFileOpenParams(azEReadWriteMode::eRead, azECreateMode::eOpenExisting));
+    oVertexShaderFile.Seek(0, azEFilePosition::eEnd);
+    azUInt uVertexShaderSize = oVertexShaderFile.Tell();
+    oVertexShaderFile.Seek(0, azEFilePosition::eBeginning);
+    azBytes pVertexShaderBuffer = azNewArray(azByte, uVertexShaderSize+1);
+    oVertexShaderFile.Read(pVertexShaderBuffer, uVertexShaderSize);
     oVertexShaderFile.Close();
+    pVertexShaderBuffer[uVertexShaderSize] = 0;
+    m_rVertexShader = rRenderer.CreateVertexShader(pVertexShaderBuffer);
+    azDeleteArray(pVertexShaderBuffer, uVertexShaderSize+1);
 
-	m_rVertexShader = rRenderer.CreateVertexShader(azL("Shaders\\Simple.vcg"));
-	m_rPixelShader = rRenderer.CreatePixelShader(azL("Shaders\\Simple.vcg"));
+    azCrtFile oPixelShaderFile;
+    oPixelShaderFile.Open(azFilePath(azL("Shaders\\Simple.pcg")), azFileOpenParams(azEReadWriteMode::eRead, azECreateMode::eOpenExisting));
+    oPixelShaderFile.Seek(0, azEFilePosition::eEnd);
+    azUInt uPixelShaderSize = oPixelShaderFile.Tell();
+    oPixelShaderFile.Seek(0, azEFilePosition::eBeginning);
+    azBytes pPixelShaderBuffer = azNewArray(azByte, uPixelShaderSize+1);
+    oPixelShaderFile.Read(pPixelShaderBuffer, uPixelShaderSize);
+    oPixelShaderFile.Close();
+    pPixelShaderBuffer[uPixelShaderSize] = 0;
+    m_rPixelShader = rRenderer.CreatePixelShader(pPixelShaderBuffer);
+    azDeleteArray(pPixelShaderBuffer, uPixelShaderSize+1);
+
+    azImage oImage;
+    oImage.Initialize();
+    //rRenderer.CreateTexture();
+    oImage.Terminate();
 
     // Initialize projection matrix
 	azMatrix4x4 oProjectionMatrix;
 	oProjectionMatrix.BuildOrthoOffCenter(0.f, 0.f, 800.f, 600.f);
-	//rRenderer.LoadMatrix(azEMatrixType::eProjection, oProjectionMatrix);
-
-	//&(rRenderer.CreateTexture());
-
-	azImage oImage;
-	oImage.Load();
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//----------------------------------------------------------------------------------------------------------------------
-void azIApplication::Terminate()
-{
-    azIRenderer& rRenderer = m_rRenderer.GetRef();
-    
-    rRenderer.DestroyVertexShader(m_rVertexShader.GetRef());
-	rRenderer.DestroyPixelShader(m_rPixelShader.GetRef());
-
-	rRenderer.DestroyVertexBuffer(m_rVertexBuffer.GetRef());
-
-	rRenderer.DestroyInputLayout(m_rInputLayout.GetRef());
-
-	rRenderer.Terminate();
-	azDelete(rRenderer);
-
-    // \todo Registration function
-    azClassManager::GrabInstance().Terminate();
-    azMemoryManager::GrabInstance().DumpLeaks();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -109,27 +103,36 @@ void azIApplication::Update()
     azMatrix4x4 oRotation;
 	oRotation.BuildFromRotateZ(GetTickCount() / 1000.0f);
 
-	//rRenderer.LoadMatrix(azEMatrixType::eModelView, oRotation * oTranslation);
-
-    azVertex aVertices[] =
-    {
-        {-200.f + 50.f * cos(GetTickCount() / 500.0f), -100.f, 0.f, 0xFFFF0000},
-        { 200.f, -100.f, 0.f, 0xFF00FF00},
-        {-200.f,  100.f, 0.f, 0xFF0000FF},
-        { 200.f,  100.f, 0.f, 0xFFFFFFFF}
-    };
-    m_rVertexBuffer.GetRef().Fill(aVertices, 4 * sizeof(azVertex));
-
-
 	rRenderer.SetVertexBuffer(0, m_rVertexBuffer);
 	rRenderer.SetInputLayout(m_rInputLayout);
 	rRenderer.SetVertexShader(m_rVertexShader);
 	rRenderer.SetPixelShader(m_rPixelShader);
 	
 	m_rVertexShader.GetRef().SetParameter(azL("a_mModelProjMatrix"), oRotation * oTranslation * oProjectionMatrix);
+    m_rVertexShader.GetRef().SetParameter(azL("a_fTime"), cos((azFloat)GetTickCount()));
 	
 	rRenderer.Bind();
 	rRenderer.DrawPrimitives(azEPrimitiveType::eTriangleStrip, 0, 2);
 	
 	rRenderer.EndScene();
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//----------------------------------------------------------------------------------------------------------------------
+void azIApplication::Terminate()
+{
+    azIRenderer& rRenderer = m_rRenderer.GetRef();
+
+    rRenderer.DestroyVertexShader(m_rVertexShader);
+    rRenderer.DestroyPixelShader(m_rPixelShader);
+    rRenderer.DestroyVertexBuffer(m_rVertexBuffer);
+    rRenderer.DestroyInputLayout(m_rInputLayout);
+
+    rRenderer.Terminate();
+    azDelete(rRenderer);
+
+    // \todo Registration function
+    azClassManager::GrabInstance().Terminate();
+    azMemoryManager::GrabInstance().DumpLeaks();
 }

@@ -12,18 +12,21 @@ public:
 	// \brief Destructor
 	~azImage();
 
-	// \brief Load
-	void Load();
+	// \brief Initialize
+	void Initialize();
+
+    // \brief Terminate
+    void Terminate();
 
 	// \brief Get the internal buffer size
-	azUInt8 const* GetBuffer() const { return m_auData; }
+	azUInt8 const* GetBuffer() const { return m_abData; }
 
 	// \brief Get the internal buffer size
 	azUInt GetBufferSize() const { return m_uWidth * m_uHeight * m_uBpp / 8; }
 
 private:
 	// Pixel data
-	azUInt8* m_auData;
+	azBytes m_abData;
 
 	//
 	azUInt m_uWidth;

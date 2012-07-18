@@ -46,10 +46,10 @@ public:
 	virtual azIInputLayout& CreateInputLayout();
 
 	// \brief Create vertex shader
-	virtual azIShader& CreateVertexShader(azSz a_szProgram);
+	virtual azIShader& CreateVertexShader(azCBytes a_pProgram);
 
 	// \brief Create pixel shader
-	virtual azIShader& CreatePixelShader(azSz a_szProgram);
+	virtual azIShader& CreatePixelShader(azCBytes a_pProgram);
 
 
 	// \brief Load matrix
@@ -84,7 +84,7 @@ public:
 
 private:
 	// \brief Check extension
-	void CheckExtension(azSz a_szExtensionName) const;
+	void CheckExtension(azSzA a_szExtensionName) const;
 
 	// \brief Load extensions
 	void LoadExtensions();
@@ -99,7 +99,7 @@ private:
 	HGLRC m_hRenderingContext;
 	
 	// Supported extensions
-	std::string m_strExtensions;
+	azStringA m_straExtensions;
 };
 
 #endif // __azGlRenderer__

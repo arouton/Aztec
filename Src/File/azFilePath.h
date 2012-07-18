@@ -10,9 +10,9 @@ class azFilePath
 public:
     azFilePath(azSz a_szPath);
 
-    static std::string GetAppPath();
+    static azString GetAppPath();
 
-    std::string m_strPath;
+    azString m_strPath;
 };
 
 #endif // __azFilePath__

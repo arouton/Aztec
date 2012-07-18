@@ -65,7 +65,7 @@ public:
 
 
 	// \brief Create vertex shader
-	virtual azIShader& CreateVertexShader(azSz a_szProgram) = 0;
+	virtual azIShader& CreateVertexShader(azCBytes a_pProgram) = 0;
 
 	// \brief Destroy vertex shader
 	void DestroyVertexShader(azIShader& a_rShader);
@@ -75,7 +75,7 @@ public:
 
 
 	// \brief Create pixel shader
-	virtual azIShader& CreatePixelShader(azSz a_szProgram) = 0;
+	virtual azIShader& CreatePixelShader(azCBytes a_pProgram) = 0;
 
 	// \brief Destroy pixel shader
 	void DestroyPixelShader(azIShader& a_rShader);

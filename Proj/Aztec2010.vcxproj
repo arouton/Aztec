@@ -18,7 +18,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -97,11 +97,13 @@
     <ClCompile Include="..\Src\Render\azGlRenderEnums.cpp" />
     <ClCompile Include="..\Src\Render\azGlRenderer.cpp" />
     <ClCompile Include="..\Src\Render\azGlShader.cpp" />
+    <ClCompile Include="..\Src\Render\azGlTexture.cpp" />
     <ClCompile Include="..\Src\Render\azIInputLayout.cpp" />
     <ClCompile Include="..\Src\Render\azImage.cpp" />
     <ClCompile Include="..\Src\Render\azIRenderer.cpp" />
     <ClCompile Include="..\Src\Render\azIGpuBuffer.cpp" />
     <ClCompile Include="..\Src\Render\azIShader.cpp" />
+    <ClCompile Include="..\Src\Render\azITexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Src\azIApplication.h" />
@@ -125,6 +127,7 @@
     <ClInclude Include="..\Src\Object\azObjectMacros.h" />
     <ClInclude Include="..\Src\Object\azTestObject.h" />
     <ClInclude Include="..\Src\Render\azGlShader.h" />
+    <ClInclude Include="..\Src\Render\azGlTexture.h" />
     <ClInclude Include="..\Src\Render\azIInputLayout.h" />
     <ClInclude Include="..\Src\Render\azGlInputLayout.h" />
     <ClInclude Include="..\Src\Render\azGlRenderEnums.h" />
@@ -134,6 +137,7 @@
     <ClInclude Include="..\Src\Render\azImage.h" />
     <ClInclude Include="..\Src\Render\azIRenderer.h" />
     <ClInclude Include="..\Src\Render\azIShader.h" />
+    <ClInclude Include="..\Src\Render\azITexture.h" />
     <ClInclude Include="..\Src\Render\azRenderEnums.h" />
     <ClInclude Include="..\Src\Toolkit\azRef.h" />
   </ItemGroup>

@@ -1,11 +1,15 @@
 #include "azImage.h"
 #include <FreeImage/FreeImagePlus.h>
+#include "Memory/azMemoryManager.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------------------------------------------
 azImage::azImage()
-: m_auData(NULL)
+: m_abData(NULL)
+, m_uWidth(0)
+, m_uHeight(0)
+, m_uBpp(0)
 {}
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -13,24 +17,24 @@ azImage::azImage()
 //----------------------------------------------------------------------------------------------------------------------
 azImage::~azImage()
 {
-	if (m_auData)
-	{
-		delete [](m_auData);
-		m_auData = NULL;
-	}
+
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------------------------------------------
-void azImage::Load()
+void azImage::Initialize()
 {
 	azSz szFilePath = azL("F://Dev//Aztec//Bin//Debug//Test.png");
 
 	FreeImage_Initialise();
 
 	fipImage oImage;
-	azBool bLoaded = (0 != oImage.load(szFilePath));
+#ifdef UNICODE
+	azBool bLoaded = (0 != oImage.loadU(szFilePath));
+#else // UNICODE
+    azBool bLoaded = (0 != oImage.load(szFilePath));
+#endif // UNICODE
 	azAssert(bLoaded, "Image extension or format not supported");
 
 	azAssert(oImage.getBitsPerPixel() <= 32, "More than 32 BPP images not yet supported, there will be some data loss");
@@ -45,10 +49,10 @@ void azImage::Load()
 	azAssert(m_uBpp == 32, "Convert didn't work properly");
 
 	azUInt uBufferSize = GetBufferSize();
-	m_auData = new azUInt8[uBufferSize];
+	m_abData = azNewArray(azByte, uBufferSize);
 
 	// There is no C++ wrapping for this method.
-	FreeImage_ConvertToRawBits(m_auData,
+    FreeImage_ConvertToRawBits(m_abData,
 		oImage,
 		oImage.getScanWidth(),
 		m_uBpp,
@@ -58,4 +62,20 @@ void azImage::Load()
 	oImage.clear();
 
 	FreeImage_DeInitialise();
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//----------------------------------------------------------------------------------------------------------------------
+void azImage::Terminate()
+{
+    azAssert(m_abData != NULL, "The data are not here...");
+
+    azUInt uBufferSize = GetBufferSize();
+    azDeleteArray(m_abData, uBufferSize);
+    m_abData = NULL;
+
+    m_uWidth = 0;
+    m_uHeight = 0;
+    m_uBpp = 0;
 }

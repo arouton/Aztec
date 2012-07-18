@@ -127,20 +127,20 @@ void azGlRenderer::Terminate()
 //----------------------------------------------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------------------------------------------
-template <class T> inline void LoadExtension(T& a_rpfnProc, azSz a_szExtensionName)
+template <class T> inline void LoadExtension(T& a_rpfnProc, azSzA a_szaExtensionName)
 {
-	a_rpfnProc = reinterpret_cast<T>(wglGetProcAddress(a_szExtensionName));
-	azAssert(a_rpfnProc != NULL, "%s loading failed", a_szExtensionName);
+	a_rpfnProc = reinterpret_cast<T>(wglGetProcAddress(a_szaExtensionName));
+	azAssert(a_rpfnProc != NULL, "%s loading failed", a_szaExtensionName);
 }
-#define azLoadExtension(Ext) LoadExtension(Ext, #Ext);
+#define azGlLoadExtension(Ext) LoadExtension(Ext, azStringizeA(Ext));
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------------------------------------------
-void azGlRenderer::CheckExtension(azSz a_szExtensionName) const
+void azGlRenderer::CheckExtension(azSzA a_szaExtensionName) const
 {
-	bool bRes = m_strExtensions.find(a_szExtensionName) != std::string::npos;
-	azAssert(bRes, "%s is not supported", a_szExtensionName);
+	bool bRes = m_straExtensions.find(a_szaExtensionName) != azString::npos;
+	azAssert(bRes, "%s is not supported", a_szaExtensionName);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -148,28 +148,28 @@ void azGlRenderer::CheckExtension(azSz a_szExtensionName) const
 //----------------------------------------------------------------------------------------------------------------------
 void azGlRenderer::LoadExtensions()
 {
-	m_strExtensions = reinterpret_cast<azSz>(glGetString(GL_EXTENSIONS));
+	m_straExtensions = reinterpret_cast<azSzA>(glGetString(GL_EXTENSIONS));
 
 	// Check for basics extensions
-	CheckExtension(azL("GL_ARB_vertex_buffer_object"));
-	CheckExtension(azL("GL_ARB_multitexture"));
+	CheckExtension("GL_ARB_vertex_buffer_object");
+	CheckExtension("GL_ARB_multitexture");
 
 	// Load needed extensions
-	azLoadExtension(glBindBufferARB);
-	azLoadExtension(glDeleteBuffersARB);
-	azLoadExtension(glGenBuffersARB);
-	azLoadExtension(glBufferDataARB);
-	azLoadExtension(glBufferSubDataARB);
-	azLoadExtension(glGetBufferSubDataARB);
-	azLoadExtension(glMapBufferARB);
-	azLoadExtension(glUnmapBufferARB);
-	azLoadExtension(glActiveTextureARB);
-	azLoadExtension(glClientActiveTextureARB);
-	azLoadExtension(glCompressedTexImage2DARB);
-	azLoadExtension(glCompressedTexSubImage2DARB);
-	azLoadExtension(glVertexAttribPointerARB);
-	azLoadExtension(glEnableVertexAttribArrayARB);
-	azLoadExtension(glDisableVertexAttribArrayARB);
+	azGlLoadExtension(glBindBufferARB);
+	azGlLoadExtension(glDeleteBuffersARB);
+	azGlLoadExtension(glGenBuffersARB);
+	azGlLoadExtension(glBufferDataARB);
+	azGlLoadExtension(glBufferSubDataARB);
+	azGlLoadExtension(glGetBufferSubDataARB);
+	azGlLoadExtension(glMapBufferARB);
+	azGlLoadExtension(glUnmapBufferARB);
+	azGlLoadExtension(glActiveTextureARB);
+	azGlLoadExtension(glClientActiveTextureARB);
+	azGlLoadExtension(glCompressedTexImage2DARB);
+	azGlLoadExtension(glCompressedTexSubImage2DARB);
+	azGlLoadExtension(glVertexAttribPointerARB);
+	azGlLoadExtension(glEnableVertexAttribArrayARB);
+	azGlLoadExtension(glDisableVertexAttribArrayARB);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -214,17 +214,18 @@ azIGpuBuffer& azGlRenderer::CreateIndexBuffer(azUInt a_uSize, azEBufferType::Enu
 azIInputLayout& azGlRenderer::CreateInputLayout()
 {
 	azGlInputLayout& rInputLayout = azNew(azGlInputLayout);
+    rInputLayout.Initialize();
 	return rInputLayout;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------------------------------------------
-azIShader& azGlRenderer::CreateVertexShader(azSz a_szProgram)
+azIShader& azGlRenderer::CreateVertexShader(azCBytes a_pProgram)
 {
 	azGlShader& rShader = azNew(azGlShader);
 
-	CGprogram pProgram = cgCreateProgram(m_pCgContext, CG_SOURCE, a_szProgram, m_eVertexShaderProfile, azL("main"), NULL);
+	CGprogram pProgram = cgCreateProgram(m_pCgContext, CG_SOURCE, reinterpret_cast<azSzA>(a_pProgram), m_eVertexShaderProfile, "main", NULL);
 	rShader.Initialize(pProgram);
 
 	return rShader;
@@ -233,11 +234,11 @@ azIShader& azGlRenderer::CreateVertexShader(azSz a_szProgram)
 //----------------------------------------------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------------------------------------------
-azIShader& azGlRenderer::CreatePixelShader(azSz a_szProgram)
+azIShader& azGlRenderer::CreatePixelShader(azCBytes a_pProgram)
 {
 	azGlShader& rShader = azNew(azGlShader);
 
-	CGprogram pProgram = cgCreateProgram(m_pCgContext, CG_SOURCE, a_szProgram, m_ePixelShaderProfile, azL("main"), NULL);
+	CGprogram pProgram = cgCreateProgram(m_pCgContext, CG_SOURCE, reinterpret_cast<azSzA>(a_pProgram), m_ePixelShaderProfile, "main", NULL);
 	rShader.Initialize(pProgram);
 
 	return rShader;

@@ -65,6 +65,12 @@
     <ClCompile Include="..\Src\File\azFilePath.cpp">
       <Filter>File</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Render\azGlTexture.cpp">
+      <Filter>Render\Gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Render\azITexture.cpp">
+      <Filter>Render\Interface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Src\azCommon.h" />
@@ -156,6 +162,12 @@
     </ClInclude>
     <ClInclude Include="..\Src\File\azFilePath.h">
       <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Render\azGlTexture.h">
+      <Filter>Render\Gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Render\azITexture.h">
+      <Filter>Render\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

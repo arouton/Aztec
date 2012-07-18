@@ -48,8 +48,8 @@ void azIRenderer::Terminate()
 //----------------------------------------------------------------------------------------------------------------------
 void azIRenderer::OnCgError()
 {
-	azSz szCgErrorMessage = cgGetErrorString(cgGetError());
-	azAssert(false, "Cg error : %s", szCgErrorMessage);
+	azSzA szaCgErrorMessage = cgGetErrorString(cgGetError());
+	azAssert(false, "Cg error : %s", szaCgErrorMessage);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

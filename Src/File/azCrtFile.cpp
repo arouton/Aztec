@@ -7,7 +7,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 void azCrtFile::Open(azFilePath const& a_rPath, azFileOpenParams const& a_rOpenParams)
 {
-    std::string strMode;
+    azString strMode;
     switch (a_rOpenParams.m_eReadWrite)
     {
         case azEReadWriteMode::eRead :
@@ -64,7 +64,11 @@ void azCrtFile::Open(azFilePath const& a_rPath, azFileOpenParams const& a_rOpenP
         azNoDefault;
     }
 
+#ifdef _UNICODE
+    _wfopen_s(&m_pFile, a_rPath.m_strPath.c_str(), strMode.c_str());
+#else //_UNICODE
     fopen_s(&m_pFile, a_rPath.m_strPath.c_str(), strMode.c_str());
+#endif //_UNICODE
 }
 
 //----------------------------------------------------------------------------------------------------------------------

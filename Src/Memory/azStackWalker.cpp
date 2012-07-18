@@ -64,7 +64,7 @@ azDbgHelpDllWrapper::azDbgHelpDllWrapper()
 void azDbgHelpDllWrapper::Initialize()
 {
 	// Load dbghelp.dll and retrieve pointers to procs
-	m_hDbgHelpDll = LoadLibrary(_T("dbghelp.dll"));
+	m_hDbgHelpDll = LoadLibrary(azL("dbghelp.dll"));
 	azAssert(m_hDbgHelpDll != NULL, "Error loading dbghelp.dll");
 
 	m_pfnSymInitialize = (SymInitializeFn)GetProcAddress(m_hDbgHelpDll, "SymInitialize");
@@ -119,12 +119,12 @@ azStackWalker::~azStackWalker()
 void azStackWalker::Initialize()
 {
 	// Build the symbol search path
-	char szSymbolSearchPath [4096];
-	szSymbolSearchPath[0] = 0;
-	BuildSymbolSearchPath(szSymbolSearchPath, 4096);
+	azCharA szaSymbolSearchPath [4096];
+	szaSymbolSearchPath[0] = 0;
+	BuildSymbolSearchPath(szaSymbolSearchPath, 4096);
 
 	// SymInitialize
-	BOOL bRes = azDbgHelpDllWrapper::GetInstance().m_pfnSymInitialize(GetCurrentProcess(), szSymbolSearchPath, false);
+	BOOL bRes = azDbgHelpDllWrapper::GetInstance().m_pfnSymInitialize(GetCurrentProcess(), szaSymbolSearchPath, false);
 	azAssert(bRes == TRUE, "SymInitialize failed : error code %d", GetLastError());
 
 	// SymSetOptions
@@ -137,11 +137,11 @@ void azStackWalker::Initialize()
 	dwSymOptions = azDbgHelpDllWrapper::GetInstance().m_pfnSymSetOptions(dwSymOptions);
 
 	// SymGetSearchPath
-	char szBuffer[c_uStackWalkerMaxNameLength];
-	szBuffer[0] = 0;
-	bRes = azDbgHelpDllWrapper::GetInstance().m_pfnSymGetSearchPath(GetCurrentProcess(), szBuffer, c_uStackWalkerMaxNameLength);
+	azCharA szaBuffer[c_uStackWalkerMaxNameLength];
+	szaBuffer[0] = 0;
+	bRes = azDbgHelpDllWrapper::GetInstance().m_pfnSymGetSearchPath(GetCurrentProcess(), szaBuffer, c_uStackWalkerMaxNameLength);
 	azAssert(bRes == TRUE, "SymGetSearchPath failed : error code %d", GetLastError());
-	azPrint("CallStack Walker Symbol Search Path: '%s'", szBuffer);
+	azPrint("CallStack Walker Symbol Search Path: '%s'", szaBuffer);
 
 	LoadModules();
 }
@@ -187,8 +187,8 @@ azBool azStackWalker::LoadModulesToolHelp32()
 		BYTE* modBaseAddr;			// Base address of module in th32ProcessID's a_pContext
 		DWORD modBaseSize;			// Size in bytes of module starting at modBaseAddr
 		HMODULE hModule;			// The hModule of this module in th32ProcessID's a_pContext
-		char szModule[256];			// (MAX_MODULE_NAME32+1, MAX_MODULE_NAME32=255 from Tlhelp32.h)
-		char szExePath[MAX_PATH];	// Should be TCHAR to handle unicode (same for szModule)
+		TCHAR szModule[256];		// (MAX_MODULE_NAME32+1, MAX_MODULE_NAME32=255 from Tlhelp32.h)
+		TCHAR szExePath[MAX_PATH];
 	};
 #	pragma pack(pop)
 
@@ -206,7 +206,7 @@ azBool azStackWalker::LoadModulesToolHelp32()
 
 	// Try both kernel32.dll and tlhelp32.dll to find the function
 	HINSTANCE hToolhelpDll = NULL;
-	LPCSTR szDllName[] = { azL("kernel32.dll"), azL("tlhelp32.dll") };
+	azChar* szDllName[] = { azL("kernel32.dll"), azL("tlhelp32.dll") };
 	for (azUInt uDllIndex = 0; 2; uDllIndex++)
 	{
 		hToolhelpDll = LoadLibrary(szDllName[uDllIndex]);
@@ -266,7 +266,7 @@ azBool azStackWalker::LoadModulesToolHelp32()
 //-------------------------------------------------------------------------------------------------------
 bool azStackWalker::LoadModulesPSAPI()
 {
-	HINSTANCE hPsapiDll = LoadLibrary(_T("psapi.dll"));
+	HINSTANCE hPsapiDll = LoadLibrary(azL("psapi.dll"));
 	if (hPsapiDll == NULL)
 	{
 		return false;
@@ -302,8 +302,8 @@ bool azStackWalker::LoadModulesPSAPI()
 
 	const DWORD c_dwSizeMax = 8096;
 	HMODULE* ahModules = (HMODULE*) alloca(sizeof(HMODULE) * (c_dwSizeMax / sizeof(HMODULE)));
-	char *szImageFileName = (char*) alloca(sizeof(char) * c_dwSizeMax);
-	char *szModuleName = (char*) alloca(sizeof(char) * c_dwSizeMax);
+	azCharA* szaImageFileName = (azCharA*) alloca(sizeof(azCharA) * c_dwSizeMax);
+	azCharA* szaModuleName = (azCharA*) alloca(sizeof(azCharA) * c_dwSizeMax);
 
 	HANDLE hProcess = GetCurrentProcess();
 
@@ -320,14 +320,14 @@ bool azStackWalker::LoadModulesPSAPI()
 				// Base address, a_uSize
 				pfnGetModuleInformation(hProcess, ahModules[dwModuleIndex], &oModuleInfo, sizeof oModuleInfo);
 				// Image file name
-				szImageFileName[0] = 0;
-				pfnGetModuleFileNameEx(hProcess, ahModules[dwModuleIndex], szImageFileName, c_dwSizeMax);
+				szaImageFileName[0] = 0;
+				pfnGetModuleFileNameEx(hProcess, ahModules[dwModuleIndex], szaImageFileName, c_dwSizeMax);
 				// Module name
-				szModuleName[0] = 0;
-				pfnGetModuleBaseName(hProcess, ahModules[dwModuleIndex], szModuleName, c_dwSizeMax);
+				szaModuleName[0] = 0;
+				pfnGetModuleBaseName(hProcess, ahModules[dwModuleIndex], szaModuleName, c_dwSizeMax);
 
 				azDbgHelpDllWrapper::GetInstance().m_pfnSymLoadModule64(hProcess, 0,
-					szImageFileName, szModuleName, (DWORD64)oModuleInfo.lpBaseOfDll, oModuleInfo.SizeOfImage);
+					szaImageFileName, szaModuleName, (DWORD64)oModuleInfo.lpBaseOfDll, oModuleInfo.SizeOfImage);
 
 				uModuleCount++;
 			}
@@ -345,23 +345,23 @@ bool azStackWalker::LoadModulesPSAPI()
 //-------------------------------------------------------------------------------------------------------
 //
 //-------------------------------------------------------------------------------------------------------
-void azStackWalker::BuildSymbolSearchPath(char* a_szSymbolSearchPath, azUInt a_uMaxSize) const
+void azStackWalker::BuildSymbolSearchPath(azCharA* a_szaSymbolSearchPath, azUInt a_uMaxSize) const
 {
-	strcat_s(a_szSymbolSearchPath, a_uMaxSize, ".;");
+	strcat_s(a_szaSymbolSearchPath, a_uMaxSize, ".;");
 
 	const size_t nTempLen = 1024;
-	char szTemp[nTempLen];
+	azCharA szaTemp[nTempLen];
 	// Now add the current directory:
-	if (GetCurrentDirectoryA(nTempLen, szTemp) > 0)
+	if (GetCurrentDirectoryA(nTempLen, szaTemp) > 0)
 	{
-		strcat_s(a_szSymbolSearchPath, a_uMaxSize, szTemp);
-		strcat_s(a_szSymbolSearchPath, a_uMaxSize, ";");
+		strcat_s(a_szaSymbolSearchPath, a_uMaxSize, szaTemp);
+		strcat_s(a_szaSymbolSearchPath, a_uMaxSize, ";");
 	}
 
 	// Now add the path for the main-module:
-	if (GetModuleFileNameA(NULL, szTemp, nTempLen) > 0)
+	if (GetModuleFileNameA(NULL, szaTemp, nTempLen) > 0)
 	{
-		for (char *p = (szTemp+strlen(szTemp)-1); p >= szTemp; --p)
+		for (azCharA *p = (szaTemp + strlen(szaTemp)-1); p >= szaTemp; --p)
 		{
 			// locate the rightmost path separator
 			if ((*p == '\\') || (*p == '/') || (*p == ':'))
@@ -370,42 +370,42 @@ void azStackWalker::BuildSymbolSearchPath(char* a_szSymbolSearchPath, azUInt a_u
 				break;
 			}
 		}  // for (search for path separator...)
-		if (strlen(szTemp) > 0)
+		if (strlen(szaTemp) > 0)
 		{
-			strcat_s(a_szSymbolSearchPath, a_uMaxSize, szTemp);
-			strcat_s(a_szSymbolSearchPath, a_uMaxSize, ";");
+			strcat_s(a_szaSymbolSearchPath, a_uMaxSize, szaTemp);
+			strcat_s(a_szaSymbolSearchPath, a_uMaxSize, ";");
 		}
 	}
-	if (GetEnvironmentVariableA("_NT_SYMBOL_PATH", szTemp, nTempLen) > 0)
+	if (GetEnvironmentVariableA("_NT_SYMBOL_PATH", szaTemp, nTempLen) > 0)
 	{
-		strcat_s(a_szSymbolSearchPath, a_uMaxSize, szTemp);
-		strcat_s(a_szSymbolSearchPath, a_uMaxSize, ";");
+		strcat_s(a_szaSymbolSearchPath, a_uMaxSize, szaTemp);
+		strcat_s(a_szaSymbolSearchPath, a_uMaxSize, ";");
 	}
-	if (GetEnvironmentVariableA("_NT_ALTERNATE_SYMBOL_PATH", szTemp, nTempLen) > 0)
+	if (GetEnvironmentVariableA("_NT_ALTERNATE_SYMBOL_PATH", szaTemp, nTempLen) > 0)
 	{
-		strcat_s(a_szSymbolSearchPath, a_uMaxSize, szTemp);
-		strcat_s(a_szSymbolSearchPath, a_uMaxSize, ";");
+		strcat_s(a_szaSymbolSearchPath, a_uMaxSize, szaTemp);
+		strcat_s(a_szaSymbolSearchPath, a_uMaxSize, ";");
 	}
-	if (GetEnvironmentVariableA("SYSTEMROOT", szTemp, nTempLen) > 0)
+	if (GetEnvironmentVariableA("SYSTEMROOT", szaTemp, nTempLen) > 0)
 	{
-		strcat_s(a_szSymbolSearchPath, a_uMaxSize, szTemp);
-		strcat_s(a_szSymbolSearchPath, a_uMaxSize, ";");
+		strcat_s(a_szaSymbolSearchPath, a_uMaxSize, szaTemp);
+		strcat_s(a_szaSymbolSearchPath, a_uMaxSize, ";");
 		// also add the "system32"-directory:
-		strcat_s(szTemp, nTempLen, "\\system32");
-		strcat_s(a_szSymbolSearchPath, a_uMaxSize, szTemp);
-		strcat_s(a_szSymbolSearchPath, a_uMaxSize, ";");
+		strcat_s(szaTemp, nTempLen, "\\system32");
+		strcat_s(a_szaSymbolSearchPath, a_uMaxSize, szaTemp);
+        strcat_s(a_szaSymbolSearchPath, a_uMaxSize, ";");
 	}
 
-	if (GetEnvironmentVariableA("SYSTEMDRIVE", szTemp, nTempLen) > 0)
+	if (GetEnvironmentVariableA("SYSTEMDRIVE", szaTemp, nTempLen) > 0)
 	{
-		strcat_s(a_szSymbolSearchPath, a_uMaxSize, "SRV*");
-		strcat_s(a_szSymbolSearchPath, a_uMaxSize, szTemp);
-		strcat_s(a_szSymbolSearchPath, a_uMaxSize, "\\websymbols");
-		strcat_s(a_szSymbolSearchPath, a_uMaxSize, "*http://msdl.microsoft.com/download/symbols;");
+		strcat_s(a_szaSymbolSearchPath, a_uMaxSize, "SRV*");
+		strcat_s(a_szaSymbolSearchPath, a_uMaxSize, szaTemp);
+		strcat_s(a_szaSymbolSearchPath, a_uMaxSize, "\\websymbols");
+		strcat_s(a_szaSymbolSearchPath, a_uMaxSize, "*http://msdl.microsoft.com/download/symbols;");
 	}
 	else
 	{
-		strcat_s(a_szSymbolSearchPath, a_uMaxSize, "SRV*oContext:\\websymbols*http://msdl.microsoft.com/download/symbols;");
+		strcat_s(a_szaSymbolSearchPath, a_uMaxSize, "SRV*oContext:\\websymbols*http://msdl.microsoft.com/download/symbols;");
 	}
 }
 
@@ -481,7 +481,7 @@ void azCallStackEntry::Decode(azCallStackDecodedEntry& a_rEntry) const
 	}
 	else
 	{
-		strcpy_s(a_rEntry.m_szMethodName, "Symbol not found");
+		strcpy_s(a_rEntry.m_szMethodName, azL("Symbol not found"));
 		//agePrint("SymGetSymFromAddr64 failed : error code %d", GetLastError());
 	}
 
@@ -500,7 +500,7 @@ void azCallStackEntry::Decode(azCallStackDecodedEntry& a_rEntry) const
 	else
 	{
 		a_rEntry.m_uLineNumber = 0;
-		strcpy_s(a_rEntry.m_szFileName, "Source file not found");
+		strcpy_s(a_rEntry.m_szFileName, azL("Source file not found"));
 		//agePrint("SymGetLineFromAddr64 failed : error code %d", GetLastError());
 	}
 }

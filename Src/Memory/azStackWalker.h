@@ -10,8 +10,8 @@ static const azUInt c_uStackWalkerMaxNameLength = 1024;
 class azCallStackDecodedEntry
 {
 public:
-	char m_szMethodName[c_uStackWalkerMaxNameLength];
-	char m_szFileName[c_uStackWalkerMaxNameLength];
+	azChar m_szMethodName[c_uStackWalkerMaxNameLength];
+	azChar m_szFileName[c_uStackWalkerMaxNameLength];
 	azUInt m_uLineNumber;
 };
 
@@ -56,7 +56,7 @@ private:
 	void Initialize();
 	void Terminate();
 		
-	void BuildSymbolSearchPath(char* a_szSymbolSearchPath, azUInt a_uMaxSize) const;
+	void BuildSymbolSearchPath(azCharA* a_szaSymbolSearchPath, azUInt a_uMaxSize) const;
 
 	void LoadModules();
 	azBool LoadModulesToolHelp32();
