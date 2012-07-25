@@ -2,6 +2,8 @@
 #include "Render/azIGpuBuffer.h"
 #include "Render/azIInputLayout.h"
 #include "Render/azIShader.h"
+#include "Render/azITexture.h"
+#include "Render/azImage.h"
 #include "Memory/azMemoryManager.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -136,5 +138,23 @@ void azIRenderer::DestroyPixelShader(azIShader& a_rShader)
 	a_rShader.Terminate();
 	azDelete(a_rShader);
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//----------------------------------------------------------------------------------------------------------------------
+void azIRenderer::SetTexture(azITexture& a_rTexture)
+{
+    m_pTexture = &a_rTexture;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//----------------------------------------------------------------------------------------------------------------------
+void azIRenderer::DestroyTexture(azITexture& a_rTexture)
+{
+    a_rTexture.Terminate();
+    azDelete(a_rTexture);
+}
+
 
 

@@ -9,6 +9,7 @@ class azIRenderer;
 class azIGpuBuffer;
 class azIInputLayout;
 class azIShader;
+class azITexture;
 
 // \class azIApplication
 // \brief Application run by main
@@ -32,8 +33,10 @@ private:
 	// Temp
 	azRef<azIGpuBuffer> m_rVertexBuffer;
 	azRef<azIInputLayout> m_rInputLayout;
-	azRef<azIShader> m_rVertexShader;
+	azRef<azIGpuBuffer> m_rIndexBuffer;
+    azRef<azIShader> m_rVertexShader;
 	azRef<azIShader> m_rPixelShader;
+    azRef<azITexture> m_rTexture;
 };
 
 #endif // __azApplication__

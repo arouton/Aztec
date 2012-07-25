@@ -64,7 +64,8 @@ void azClassManager::RegisterMetaClass(azMetaClass& a_rMetaClass)
 //-------------------------------------------------------------------------------------------------------
 void azClassManager::UnregisterMetaClass(azMetaClass& a_rMetaClass)
 {
-
+    // todo
+    azAssert(false, "This is not done yet");
 }
 
 //-------------------------------------------------------------------------------------------------------

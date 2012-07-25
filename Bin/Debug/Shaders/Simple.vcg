@@ -1,16 +1,25 @@
-struct azOutput
+struct azInput 
 {
-  float4 m_f4Position : POSITION;
-  float3 f_f3color : COLOR;
+	float4 m_f4Position : POSITION;
+	float4 m_f4Color0 : COLOR0;
+	float2 m_f2TexCoord0 : TEXCOORD0;
 };
 
-azOutput main(uniform float4x4 a_mModelProjMatrix, uniform float a_fTime, in float4 a_f4Position : POSITION, in float4 a_f4Color : COLOR)
+struct azOutput
+{
+	float4 m_f4Position : POSITION;
+	float4 m_f4Color0 : COLOR0;
+	float2 m_f2TexCoord0 : TEXCOORD0;
+};
+
+azOutput main(azInput a_oInput, uniform float4x4 a_mModelProjMatrix, uniform float a_fTime)
 {	
-  azOutput oOutput;
+	azOutput oOutput;
 
-  oOutput.m_f4Position = mul(a_mModelProjMatrix, a_f4Position);
-  oOutput.m_f4Position = oOutput.m_f4Position + 0.01f * float4(a_fTime, a_fTime, a_fTime, 0.f);
-  oOutput.f_f3color = a_f4Color;
+	oOutput.m_f4Position = mul(a_mModelProjMatrix, a_oInput.m_f4Position);
+	oOutput.m_f4Position = oOutput.m_f4Position + 0.01f * float4(a_fTime, a_fTime, a_fTime, 0.f);
+	oOutput.m_f4Color0 = a_oInput.m_f4Color0;
+	oOutput.m_f2TexCoord0 = a_oInput.m_f2TexCoord0;
 
-  return oOutput;	
+	return oOutput;	
 }

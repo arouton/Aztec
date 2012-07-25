@@ -8,6 +8,8 @@
 class azIGpuBuffer;
 class azIInputLayout;
 class azIShader;
+class azITexture;
+class azImage;
 class azMatrix4x4;
 
 // \class azIRenderer
@@ -83,9 +85,14 @@ public:
 	// \brief Set the currently used pixel shader
 	void SetPixelShader(azIShader& a_rShader);
 
+	// \brief Create texture
+    virtual azITexture& CreateTexture(azImage const& a_rImage) = 0;
 
-	// \brief Load matrix
-	virtual void LoadMatrix(azEMatrixType::Enum a_eType, const azMatrix4x4& a_rMatrix) = 0;
+    // \brief Destroy texture
+    void DestroyTexture(azITexture& a_rTexture);
+
+    // \brief Set the currently used texture (unit 0)
+    void SetTexture(azITexture& a_rTexture);
 
 	
 	// \brief Bind
@@ -116,6 +123,9 @@ protected:
 
 	// Current pixel shader
 	azIShader* m_pPixelShader;
+
+    // Current texture
+    azITexture* m_pTexture;
 
 
 	// Cg context

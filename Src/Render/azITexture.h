@@ -18,7 +18,7 @@ public:
 	virtual ~azITexture() {}
 
 	// \brief Initialize
-	virtual void Initialize(azUInt a_uWidth, azUInt a_uHeight, azEPixelFormat::Enum a_ePixelFormat);
+	virtual void Initialize(azImage const& a_rImage);
 
 	// \brief Terminate
 	virtual void Terminate() {}
@@ -32,9 +32,6 @@ protected:
 
 	// Texture height
 	azUInt m_uHeight;
-
-	// Pixel buffer in RAM (can be NULL)
-	azImage* m_pImage;
 
 	// Mipmap infos
 	//azBool m_bHasMipmaps;

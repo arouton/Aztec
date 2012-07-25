@@ -4,6 +4,7 @@
 #include "Render/azGlRenderEnums.h"
 #include "Render/azGlInputLayout.h"
 #include "Render/azGlShader.h"
+#include "Render/azGlTexture.h"
 #include "Math/azMatrix4x4.h"
 #include <Cg/cgGL.h>
 #include "Memory/azMemoryManager.h"
@@ -247,6 +248,16 @@ azIShader& azGlRenderer::CreatePixelShader(azCBytes a_pProgram)
 //----------------------------------------------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------------------------------------------
+azITexture& azGlRenderer::CreateTexture(azImage const& a_rImage)
+{
+    azITexture& rTexture = azNew(azGlTexture);
+    rTexture.Initialize(a_rImage);
+    return rTexture;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//----------------------------------------------------------------------------------------------------------------------
 void azGlRenderer::Bind() const
 {
 	// Desactivate previous states
@@ -356,6 +367,23 @@ void azGlRenderer::Bind() const
 		cgGLBindProgram(m_pPixelShader->GetCgProgram());
 		cgGLEnableProfile(m_ePixelShaderProfile);
 	}
+
+    // Set texture
+    if (m_pTexture)
+    {
+        glActiveTextureARB(GL_TEXTURE0_ARB /*+ Unit*/); // todo : handle more than one unit
+        const azGlTexture* pTexture = static_cast<const azGlTexture*>(m_pTexture);
+        if (pTexture)
+        {
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, pTexture->GetTextureId());
+        }
+        else
+        {
+            glDisable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, 0);
+        }
+    }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -369,16 +397,4 @@ void azGlRenderer::DrawPrimitives(azEPrimitiveType::Enum a_ePrimitiveType, azUIn
 	glDrawArrays(ePrimitiveType, a_uFirstVertex, uCount);
 }
 
-//----------------------------------------------------------------------------------------------------------------------
-//
-//----------------------------------------------------------------------------------------------------------------------
-void azGlRenderer::LoadMatrix(azEMatrixType::Enum a_eType, const azMatrix4x4& a_rMatrix)
-{
-    if (a_eType >= azEMatrixType::eTexture0)
-	{
-        glActiveTextureARB(GL_TEXTURE0_ARB + (a_eType - azEMatrixType::eTexture0));
-	}
 
-	glMatrixMode(azGlRenderEnums::GetNativeMatrixType(a_eType));
-    glLoadMatrixf(a_rMatrix);
-}

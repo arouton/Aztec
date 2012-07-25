@@ -1,4 +1,5 @@
 #include "azITexture.h"
+#include "azImage.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -7,15 +8,14 @@ azITexture::azITexture()
 : m_ePixelFormat()
 , m_uWidth(0)
 , m_uHeight(0)
-, m_pImage(NULL)
 {}
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------------------------------------------
-void azITexture::Initialize(azUInt a_uWidth, azUInt a_uHeight, azEPixelFormat::Enum a_ePixelFormat)
+void azITexture::Initialize(azImage const& a_rImage)
 {
-	m_uWidth = a_uWidth;
-	m_uHeight = a_uHeight;
-	m_ePixelFormat = a_ePixelFormat;
+	m_uWidth = a_rImage.GetWidth();
+	m_uHeight = a_rImage.GetHeight();
+	m_ePixelFormat = a_rImage.GetPixelFormat();
 }

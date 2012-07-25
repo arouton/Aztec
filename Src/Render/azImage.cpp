@@ -15,37 +15,29 @@ azImage::azImage()
 //----------------------------------------------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------------------------------------------
-azImage::~azImage()
-{
-
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//----------------------------------------------------------------------------------------------------------------------
 void azImage::Initialize()
 {
 	azSz szFilePath = azL("F://Dev//Aztec//Bin//Debug//Test.png");
 
 	FreeImage_Initialise();
 
-	fipImage oImage;
+	fipImage oFreeImage;
 #ifdef UNICODE
-	azBool bLoaded = (0 != oImage.loadU(szFilePath));
+	azBool bLoaded = (0 != oFreeImage.loadU(szFilePath));
 #else // UNICODE
-    azBool bLoaded = (0 != oImage.load(szFilePath));
+    azBool bLoaded = (0 != oFreeImage.load(szFilePath));
 #endif // UNICODE
 	azAssert(bLoaded, "Image extension or format not supported");
 
-	azAssert(oImage.getBitsPerPixel() <= 32, "More than 32 BPP images not yet supported, there will be some data loss");
+	azAssert(oFreeImage.getBitsPerPixel() <= 32, "More than 32 BPP images not yet supported, there will be some data loss");
 
 	// Always convert to RGBA 32 bits
-	azBool bConverted = (0 != oImage.convertTo32Bits());
+	azBool bConverted = (0 != oFreeImage.convertTo32Bits());
 	azAssert(bConverted, "Image recognized but we failed to convert it to 32 BPP");
 
-	m_uWidth = oImage.getWidth();
-	m_uHeight = oImage.getHeight();
-	m_uBpp = oImage.getBitsPerPixel();
+	m_uWidth = oFreeImage.getWidth();
+	m_uHeight = oFreeImage.getHeight();
+	m_uBpp = oFreeImage.getBitsPerPixel();
 	azAssert(m_uBpp == 32, "Convert didn't work properly");
 
 	azUInt uBufferSize = GetBufferSize();
@@ -53,13 +45,13 @@ void azImage::Initialize()
 
 	// There is no C++ wrapping for this method.
     FreeImage_ConvertToRawBits(m_abData,
-		oImage,
-		oImage.getScanWidth(),
+		oFreeImage,
+		oFreeImage.getScanWidth(),
 		m_uBpp,
 		FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK,
 		true);  
 	
-	oImage.clear();
+	oFreeImage.clear();
 
 	FreeImage_DeInitialise();
 }
@@ -78,4 +70,29 @@ void azImage::Terminate()
     m_uWidth = 0;
     m_uHeight = 0;
     m_uBpp = 0;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//----------------------------------------------------------------------------------------------------------------------
+azUInt azImage::GetWidth() const
+{
+    return m_uWidth;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//----------------------------------------------------------------------------------------------------------------------
+azUInt azImage::GetHeight() const
+{
+    return m_uHeight;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//----------------------------------------------------------------------------------------------------------------------
+azEPixelFormat::Enum azImage::GetPixelFormat() const
+{
+    // Hardcoded for now
+    return azEPixelFormat::eA8R8G8B8;
 }

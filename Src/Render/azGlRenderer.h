@@ -51,9 +51,8 @@ public:
 	// \brief Create pixel shader
 	virtual azIShader& CreatePixelShader(azCBytes a_pProgram);
 
-
-	// \brief Load matrix
-	virtual void LoadMatrix(azEMatrixType::Enum a_eType, const azMatrix4x4& a_rMatrix);
+    // \brief Create texture
+    virtual azITexture& CreateTexture(azImage const& a_rImage);
 
 
 	// \brief Bind
