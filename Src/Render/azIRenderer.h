@@ -53,7 +53,7 @@ public:
 	void DestroyIndexBuffer(azIGpuBuffer& a_rBuffer);
 
 	// \brief Set the currently used index buffer
-	void SetIndexBuffer(const azIGpuBuffer& a_rBuffer);
+	void SetIndexBuffer(const azIGpuBuffer& a_rBuffer, azSize a_uIndexBufferStride);
 
 
 	// \brief Create input layout

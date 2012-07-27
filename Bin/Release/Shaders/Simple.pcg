@@ -1,0 +1,22 @@
+struct azInput
+{
+	float4 m_f4Position : POSITION;
+	float4 m_f4Color0 : COLOR0;
+	float2 m_f2TexCoord0 : TEXCOORD0;
+};
+
+struct azOutput
+{
+	float4 m_f4Color : COLOR;
+};
+
+azOutput main(azInput a_oInput, uniform sampler2D a_s2Texture)
+{
+  azOutput oOutput;
+  
+  float4 f4Color1 = tex2D(a_s2Texture, a_oInput.m_f2TexCoord0.xy);
+  float4 f4Color2 = a_oInput.m_f4Color0;
+  oOutput.m_f4Color = f4Color1 * f4Color2;
+  
+  return oOutput;
+}

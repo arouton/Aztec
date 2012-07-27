@@ -2,6 +2,9 @@ Obj/
 Bin/Debug/*.exe
 Bin/Debug/*.pdb
 Bin/Debug/*.ilk
+Bin/Release/*.exe
+Bin/Release/*.pdb
+Bin/Release/*.ilk
 
 #################
 ## Visual Studio

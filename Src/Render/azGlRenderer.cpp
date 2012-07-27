@@ -91,7 +91,7 @@ void azGlRenderer::Initialize()
 	LoadExtensions();
 
 	// Default states
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClearColor(1.f, 1.f, 1.f, 1.f);
 	glClearDepth(1.0f);
 	glClearStencil(0);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
@@ -261,128 +261,137 @@ azITexture& azGlRenderer::CreateTexture(azImage const& a_rImage)
 void azGlRenderer::Bind() const
 {
 	// Desactivate previous states
-	glColor4f(0.f, 0.f, 0.f, 0.f);
-	glDisableClientState(GL_INDEX_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_COLOR_ARRAY);
-	for (int i = 0; i < 4; ++i)
-	{
-		glActiveTextureARB(GL_TEXTURE0_ARB + i);
-		glDisable(GL_TEXTURE_2D);
-	}
-	cgGLDisableProfile(m_eVertexShaderProfile);
-	cgGLUnbindProgram(m_eVertexShaderProfile);
-	cgGLDisableProfile(m_ePixelShaderProfile);
-	cgGLUnbindProgram(m_ePixelShaderProfile);
 
     // Send index buffer to API, if any
-    const azGlIndexBuffer* pIndexBuffer = static_cast<const azGlIndexBuffer*>(m_pIndexBuffer);
-	if (pIndexBuffer)
+	if (m_pIndexBuffer != NULL)
 	{
-		glEnableClientState(GL_INDEX_ARRAY);
+        const azGlIndexBuffer* pIndexBuffer = static_cast<const azGlIndexBuffer*>(m_pIndexBuffer);
+        azAssert(pIndexBuffer != NULL, "");
+
+        glEnableClientState(GL_INDEX_ARRAY);
 		glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, pIndexBuffer->GetBufferId());
 
 		// Save index stride
 		//m_uIndexBufferStride = uIndexBufferStride;
 	}
+    else
+    {
+        glDisableClientState(GL_INDEX_ARRAY);
+    }
 
 	// Send vertex buffers to API
+
 	for (azUInt uStream = 0; uStream < 16; uStream++)
 	{
-		const azGlVertexBuffer* pVertexBuffer = static_cast<const azGlVertexBuffer*>(m_apVertexBuffers[uStream]);
-		if (pVertexBuffer)
-		{
-			// Bind buffer before setting states and pointers
-			glBindBufferARB(GL_ARRAY_BUFFER_ARB, pVertexBuffer->GetBufferId());
+        azIGpuBuffer const* pIBuffer = m_apVertexBuffers[uStream];
+        if (pIBuffer != NULL)
+        {
+		    azGlVertexBuffer const* pVertexBuffer = static_cast<azGlVertexBuffer const*>(pIBuffer);
+		    azAssert(pVertexBuffer != NULL, "");
 
-			// Look at the input layout to setup the different states and pointers
-			const azGlInputLayout* pInputLayout = static_cast<const azGlInputLayout*>(m_pInputLayout);
-			azInputLayoutElements const& rvElements = pInputLayout->GetElements(uStream);
-			for(azInputLayoutElements::const_iterator it = rvElements.begin(); it != rvElements.end(); it++)
-			{
-				azInputLayoutElement const& rElement = *it;
-				GLint iGlSize = azGlRenderEnums::GetNativeFormatSize(rElement.m_eFormatType);
-				GLenum eGlType = azGlRenderEnums::GetNativeFormatType(rElement.m_eFormatType);
-				GLsizei uStride = rElement.m_uStride;
-				azUInt uOffset = rElement.m_uOffset; // + MinVertex * uStride
+		    // Bind buffer before setting states and pointers
+		    glBindBufferARB(GL_ARRAY_BUFFER_ARB, pVertexBuffer->GetBufferId());
 
-				GLenum eGlUsage = azGlRenderEnums::GetNativeSemanticType(rElement.m_eSemanticType);
-				// Generic attributes
-				if (eGlUsage == 0)
-				{
-					GLuint uSemanticsIndex = rElement.m_uSemanticIndex;
-					glEnableVertexAttribArrayARB(uSemanticsIndex);
-					glVertexAttribPointerARB(uSemanticsIndex, iGlSize, eGlType, uStride, (GLvoid*)uOffset);
-				}
-				// Specific attributes
-				else
-				{
-					switch (rElement.m_eSemanticType)
-					{
-						// Position
-						case azESemanticType::ePosition :
-						{
-							glVertexPointer(iGlSize, eGlType, uStride, (GLvoid*)uOffset);
-							break;
-						}
-						// Normal
-						case azESemanticType::eNormal :
-						{
-							glNormalPointer(eGlType, uStride, (GLvoid*)uOffset);
-							break;
-						}
-						// Diffuse color
-						case azESemanticType::eDiffuse :
-						{
-							glColorPointer(iGlSize, eGlType, uStride, (GLvoid*)uOffset);
-							break;
-						}
-						// Texture coordonates
-						case azESemanticType::eTexCoord :
-						{
-							GLuint uSemanticsIndex = rElement.m_uSemanticIndex;
-							glActiveTextureARB(GL_TEXTURE0_ARB + uSemanticsIndex);
-							glEnable(GL_TEXTURE_2D);
-							glClientActiveTextureARB(GL_TEXTURE0_ARB + uSemanticsIndex);
-							glTexCoordPointer(iGlSize, eGlType, uStride, (GLvoid*)uOffset);
-							break;
-						}
-					}
-					glEnableClientState(eGlUsage);
-				}
-			}
+		    // Look at the input layout to setup the different states and pointers
+		    azGlInputLayout const* pInputLayout = static_cast<azGlInputLayout const*>(m_pInputLayout);
+            azAssert(pInputLayout != NULL, "");
+
+		    azInputLayoutElements const& rvElements = pInputLayout->GetElements(uStream);
+		    for(azInputLayoutElements::const_iterator it = rvElements.begin(); it != rvElements.end(); it++)
+		    {
+			    azInputLayoutElement const& rElement = *it;
+			    GLint iGlSize = azGlRenderEnums::GetNativeFormatSize(rElement.m_eFormatType);
+			    GLenum eGlType = azGlRenderEnums::GetNativeFormatType(rElement.m_eFormatType);
+			    GLsizei uStride = rElement.m_uStride;
+			    azUInt uOffset = rElement.m_uOffset; // + MinVertex * uStride
+
+			    GLenum eGlUsage = azGlRenderEnums::GetNativeSemanticType(rElement.m_eSemanticType);
+			    // Generic attributes
+			    if (eGlUsage == 0)
+			    {
+				    GLuint uSemanticsIndex = rElement.m_uSemanticIndex;
+				    glEnableVertexAttribArrayARB(uSemanticsIndex);
+				    glVertexAttribPointerARB(uSemanticsIndex, iGlSize, eGlType, uStride, (GLvoid*)uOffset);
+			    }
+			    // Specific attributes
+			    else
+			    {
+				    switch (rElement.m_eSemanticType)
+				    {
+					    // Position
+					    case azESemanticType::ePosition :
+					    {
+						    glVertexPointer(iGlSize, eGlType, uStride, (GLvoid*)uOffset);
+						    break;
+					    }
+					    // Normal
+					    case azESemanticType::eNormal :
+					    {
+						    glNormalPointer(eGlType, uStride, (GLvoid*)uOffset);
+						    break;
+					    }
+					    // Diffuse color
+					    case azESemanticType::eDiffuse :
+					    {
+						    glColorPointer(iGlSize, eGlType, uStride, (GLvoid*)uOffset);
+						    break;
+					    }
+					    // Texture coordonates
+					    case azESemanticType::eTexCoord :
+					    {
+						    GLuint uSemanticsIndex = rElement.m_uSemanticIndex;
+						    glActiveTextureARB(GL_TEXTURE0_ARB + uSemanticsIndex);
+						    glEnable(GL_TEXTURE_2D);
+						    glClientActiveTextureARB(GL_TEXTURE0_ARB + uSemanticsIndex);
+						    glTexCoordPointer(iGlSize, eGlType, uStride, (GLvoid*)uOffset);
+						    break;
+					    }
+				    }
+				    glEnableClientState(eGlUsage);
+			    }
+            }
 		}
 	}
 
 	// Set shaders
-	if (m_pVertexShader)
+	if (m_pVertexShader != NULL)
 	{
 		cgGLBindProgram(m_pVertexShader->GetCgProgram());
 		cgGLEnableProfile(m_eVertexShaderProfile);
 	}
+    else
+    {
+        cgGLDisableProfile(m_eVertexShaderProfile);
+        cgGLUnbindProgram(m_eVertexShaderProfile);
+    }
 
-	if (m_pPixelShader)
+	if (m_pPixelShader != NULL)
 	{
 		cgGLBindProgram(m_pPixelShader->GetCgProgram());
 		cgGLEnableProfile(m_ePixelShaderProfile);
 	}
+    else
+    {
+        cgGLDisableProfile(m_ePixelShaderProfile);
+        cgGLUnbindProgram(m_ePixelShaderProfile);
+    }
 
     // Set texture
-    if (m_pTexture)
+    if (m_pTexture != NULL)
     {
-        glActiveTextureARB(GL_TEXTURE0_ARB /*+ Unit*/); // todo : handle more than one unit
-        const azGlTexture* pTexture = static_cast<const azGlTexture*>(m_pTexture);
-        if (pTexture)
-        {
-            glEnable(GL_TEXTURE_2D);
-            glBindTexture(GL_TEXTURE_2D, pTexture->GetTextureId());
-        }
-        else
-        {
-            glDisable(GL_TEXTURE_2D);
-            glBindTexture(GL_TEXTURE_2D, 0);
-        }
+        glActiveTextureARB(GL_TEXTURE0_ARB + 0 /*+ Unit*/); // todo : handle more than one unit
+
+        azGlTexture const* pTexture = static_cast<azGlTexture const*>(m_pTexture);
+        azAssert(pTexture != NULL, "");
+        glBindTexture(GL_TEXTURE_2D, pTexture->GetTextureId());
+    }
+    else
+    {
+        glActiveTextureARB(GL_TEXTURE0_ARB + 0 /*+ Unit*/); // todo : handle more than one unit
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 }
 
@@ -394,7 +403,16 @@ void azGlRenderer::DrawPrimitives(azEPrimitiveType::Enum a_ePrimitiveType, azUIn
 	GLenum ePrimitiveType = azGlRenderEnums::GetNativePrimitiveType(a_ePrimitiveType);
 	GLsizei uCount = azGlRenderEnums::GetNativePrimitiveVertexCount(a_ePrimitiveType, a_uCount);
 
-	glDrawArrays(ePrimitiveType, a_uFirstVertex, uCount);
+    if (m_pIndexBuffer == NULL)
+    {
+    	glDrawArrays(ePrimitiveType, a_uFirstVertex, uCount);
+    }
+    else
+    {
+        GLenum eIndexType = (m_uIndexBufferStride == 2 ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT);
+        GLvoid* pAddress = ((azByte*)NULL) + a_uFirstVertex * m_uIndexBufferStride;
+        glDrawElements(ePrimitiveType, uCount, eIndexType, pAddress);
+    }
 }
 
 

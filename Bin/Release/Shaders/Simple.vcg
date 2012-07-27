@@ -1,0 +1,24 @@
+struct azInput 
+{
+	float4 m_f4Position : POSITION;
+	float4 m_f4Color0 : COLOR0;
+	float2 m_f2TexCoord0 : TEXCOORD0;
+};
+
+struct azOutput
+{
+	float4 m_f4Position : POSITION;
+	float4 m_f4Color0 : COLOR0;
+	float2 m_f2TexCoord0 : TEXCOORD0;
+};
+
+azOutput main(azInput a_oInput, uniform float4x4 a_mModelProjMatrix, uniform float a_fTime)
+{	
+	azOutput oOutput;
+
+	oOutput.m_f4Position = mul(a_mModelProjMatrix, a_oInput.m_f4Position);
+	oOutput.m_f4Color0 = a_oInput.m_f4Color0;
+	oOutput.m_f2TexCoord0 = a_oInput.m_f2TexCoord0;
+
+	return oOutput;	
+}

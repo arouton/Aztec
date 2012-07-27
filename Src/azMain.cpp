@@ -19,6 +19,12 @@ LRESULT CALLBACK azGlobalWindowProc(HWND a_hWindow, UINT a_uMessage, WPARAM a_WP
 			return 0;
 		}
 
+        // Window resize
+        case WM_SIZE:
+        {
+            //
+        }
+
 		// Key stroke
 		case WM_KEYDOWN:
 		{
@@ -153,7 +159,7 @@ void azMain::CreateMainWindow()
 	RegisterClassEx(&oWindowClass);
 
 	// Window creation
-	m_hWindow = CreateWindow(azL("Aztec"), azL("Prototype"), WS_SYSMENU, iLeft, iTop, iWidth, iHeight, NULL, NULL, m_hInstance, NULL);
+	m_hWindow = CreateWindow(azL("Aztec"), azL("Prototype"), WS_OVERLAPPEDWINDOW , iLeft, iTop, iWidth, iHeight, NULL, NULL, m_hInstance, NULL);
 	azAssert(m_hWindow != NULL, "Couldn't create window");
 	ShowWindow(m_hWindow, SW_NORMAL);
 }

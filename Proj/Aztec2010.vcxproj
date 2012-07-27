@@ -73,7 +73,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;Cg\cg.lib;Cg\cgGL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;$(ProjectDir)..\Ext\Lib\Cg\cg.lib;$(ProjectDir)..\Ext\Lib\Cg\cgGL.lib;$(ProjectDir)..\Ext\Lib\FreeImage\FreeImage.lib;$(ProjectDir)..\Ext\Lib\FreeImage\FreeImagePlus.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)..\Ext\Lib\</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

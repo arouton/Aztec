@@ -17,7 +17,6 @@ azOutput main(azInput a_oInput, uniform float4x4 a_mModelProjMatrix, uniform flo
 	azOutput oOutput;
 
 	oOutput.m_f4Position = mul(a_mModelProjMatrix, a_oInput.m_f4Position);
-	oOutput.m_f4Position = oOutput.m_f4Position + 0.01f * float4(a_fTime, a_fTime, a_fTime, 0.f);
 	oOutput.m_f4Color0 = a_oInput.m_f4Color0;
 	oOutput.m_f2TexCoord0 = a_oInput.m_f2TexCoord0;
 

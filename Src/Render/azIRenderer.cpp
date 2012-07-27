@@ -15,6 +15,7 @@ azIRenderer::azIRenderer()
 	, m_pInputLayout(NULL)
 	, m_pVertexShader(NULL)
 	, m_pPixelShader(NULL)
+    , m_pTexture(NULL)
 	, m_pCgContext(NULL)
 {
 	for (azUInt uSlotIndex = 0; uSlotIndex < 16; uSlotIndex++)
@@ -74,9 +75,10 @@ void azIRenderer::DestroyVertexBuffer(azIGpuBuffer& a_rBuffer)
 //----------------------------------------------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------------------------------------------
-void azIRenderer::SetIndexBuffer(const azIGpuBuffer& a_rBuffer)
+void azIRenderer::SetIndexBuffer(const azIGpuBuffer& a_rBuffer, azSize a_uIndexBufferStride)
 {
 	m_pIndexBuffer = &a_rBuffer;
+    m_uIndexBufferStride = a_uIndexBufferStride;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
