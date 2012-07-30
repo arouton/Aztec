@@ -71,6 +71,9 @@
     <ClCompile Include="..\Src\Render\azITexture.cpp">
       <Filter>Render\Interface</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Toolkit\azTimer.cpp">
+      <Filter>Toolkit</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Src\azCommon.h" />
@@ -168,6 +171,9 @@
     </ClInclude>
     <ClInclude Include="..\Src\Render\azITexture.h">
       <Filter>Render\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Toolkit\azTimer.h">
+      <Filter>Toolkit</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

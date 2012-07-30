@@ -2,7 +2,6 @@
 #define __azMain__
 
 #include "azCommon.h"
-#include <windows.h>
 
 class azIApplication;
 
@@ -29,7 +28,7 @@ public:
 
 
 	// \brief Get Window handle
-	HWND GetWindow() { return m_hWindow; }
+	azWinHandle GetWindowHandle() { return m_hWindow; }
 
 private:
 	// \brief Create main window
@@ -37,9 +36,6 @@ private:
 
 	// \brief Destroy main window
 	void DestroyMainWindow();
-
-	// \brief Callback handling window messages
-	//static LRESULT CALLBACK GlobalWindowProc(HWND a_hWindow, azUInt a_uMessage, WPARAM a_WParam, LPARAM a_LParam);
 
 
 	// As exit at the end of the loop been requested
@@ -53,10 +49,10 @@ private:
 
 
 	// Application instance
-	HINSTANCE m_hInstance;
+	azWinHandle m_hInstance; // HINSTANCE
 
 	// Window handle
-	HWND m_hWindow;      
+	azWinHandle m_hWindow; // HWND
 
 };
 

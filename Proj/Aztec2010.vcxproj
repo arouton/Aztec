@@ -104,6 +104,7 @@
     <ClCompile Include="..\Src\Render\azIGpuBuffer.cpp" />
     <ClCompile Include="..\Src\Render\azIShader.cpp" />
     <ClCompile Include="..\Src\Render\azITexture.cpp" />
+    <ClCompile Include="..\Src\Toolkit\azTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Src\azIApplication.h" />
@@ -140,6 +141,7 @@
     <ClInclude Include="..\Src\Render\azITexture.h" />
     <ClInclude Include="..\Src\Render\azRenderEnums.h" />
     <ClInclude Include="..\Src\Toolkit\azRef.h" />
+    <ClInclude Include="..\Src\Toolkit\azTimer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Src\Math\azMatrix4x4.inl" />

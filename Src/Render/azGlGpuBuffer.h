@@ -2,8 +2,13 @@
 #define __azGlGpuBuffer__
 
 #include "azCommon.h"
+
+// To remove by wrapping better opengl calls
+#include <windows.h>
 #include <gl/gl.h>
 #include <gl/glext.h>
+// To remove
+
 #include "Render/azGlRenderEnums.h"
 #include "Render/azGlRenderer.h"
 #include "Render/azIGpuBuffer.h"

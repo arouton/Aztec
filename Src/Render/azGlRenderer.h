@@ -3,10 +3,13 @@
 
 #include "azCommon.h"
 #include "Render/azIRenderer.h"
+#include <string>
+
+// To remove by wrapping better opengl calls
 #include <windows.h>
 #include <gl/gl.h>
 #include <gl/glext.h>
-#include <string>
+// To remove
 
 class azIGpuBuffer;
 class azIInputLayout;
@@ -89,13 +92,13 @@ private:
 	void LoadExtensions();
 
 	// Window
-	HWND m_hWindow;
+    azWinHandle m_hWindow; // HWND
 
 	// Device context
-	HDC m_hDeviceContext;
+	azWinHandle m_hDeviceContext; // HDC
 	
 	// Rendering context
-	HGLRC m_hRenderingContext;
+    azWinHandle m_hRenderingContext; // HGLRC
 	
 	// Supported extensions
 	azStringA m_straExtensions;

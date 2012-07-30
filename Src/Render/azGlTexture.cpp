@@ -1,4 +1,5 @@
 #include "azGlTexture.h"
+#include <windows.h>
 #include <gl/gl.h>
 #include <gl/glext.h>
 #include "Render/azGlRenderEnums.h"

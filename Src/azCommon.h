@@ -5,19 +5,24 @@
 	#define NULL (0)
 #endif // NULL
 
-#define AZ_API 
+#define AZ_API
+
+#define AZ_BUILD_WINDOWS 1
 
 typedef long azInt;
 typedef unsigned long azUInt;
 typedef float azFloat;
+typedef double azDouble;
 typedef bool azBool;
 
 typedef unsigned char azUInt8;
 typedef char azInt8;
 typedef unsigned short azUInt16;
 typedef short azInt16;
-typedef azUInt azUInt32;
-typedef int azInt32;
+typedef unsigned long azUInt32;
+typedef long azInt32;
+typedef unsigned long long azUInt64;
+typedef long long azInt64;
 
 typedef void* azPtr;
 typedef void const* azCPtr;
@@ -29,6 +34,7 @@ typedef azUInt8 const* azCBytes;
 
 typedef size_t azSize;
 
+typedef azPtr azWinHandle;
 
 typedef char azCharA;
 typedef wchar_t azCharW;

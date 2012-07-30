@@ -2,8 +2,23 @@
 #define __azGlRenderEnums__
 
 #include "Render/azRenderEnums.h"
-#include <windows.h>
-#include <gl/gl.h>
+
+// This is copied from Gl.h, so we dont have to include gl.h (and then windows.h)
+typedef unsigned int GLenum;
+typedef unsigned char GLboolean;
+typedef unsigned int GLbitfield;
+typedef signed char GLbyte;
+typedef short GLshort;
+typedef int GLint;
+typedef int GLsizei;
+typedef unsigned char GLubyte;
+typedef unsigned short GLushort;
+typedef unsigned int GLuint;
+typedef float GLfloat;
+typedef float GLclampf;
+typedef double GLdouble;
+typedef double GLclampd;
+typedef void GLvoid;
 
 class AZ_API azGlRenderEnums
 {

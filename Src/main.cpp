@@ -2,8 +2,6 @@
 #include "azMain.h"
 #include "azIApplication.h"
 
-#include "Math\azMatrix4x4.h"
-
 // \class azMyApplication
 // \brief An application
 class azMyApplication : public azIApplication

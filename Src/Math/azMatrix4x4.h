@@ -11,7 +11,6 @@
 class azMatrix4x4
 {
 public :
-
 	// \brief Default constructor
 	azMatrix4x4(azFloat a_fA11 = 1.0f, azFloat a_fA12 = 0.0f, azFloat a_fA13 = 0.0f, azFloat a_fA14 = 0.0f,
 		azFloat a_fA21 = 0.0f, azFloat a_fA22 = 1.0f, azFloat a_fA23 = 0.0f, azFloat a_fA24 = 0.0f,
@@ -37,7 +36,7 @@ public :
 	// \brief Build matrix from a scale
 	void BuildFromScale(azFloat a_fX, azFloat a_fY, azFloat a_fZ);
 
-	// \brief Build matrix from a rotation aroind (0, 0, 0)
+	// \brief Build matrix from a rotation around (0, 0, 0)
 	void BuildFromRotateX(azFloat a_fAngle);
 	void BuildFromRotateY(azFloat a_fAngle);
 	void BuildFromRotateZ(azFloat a_fAngle);
@@ -49,7 +48,7 @@ public :
 	void BuildPerspectiveFOV(azFloat a_fFov, azFloat a_fRatio, azFloat a_fNear, azFloat a_fFar);
 
 	// Build a look at matrix
-	void BuildLookAt(const azVector3& a_f3From, const azVector3& a_f3To, const azVector3& a_f3Up = azVector3(0.f, 1.f, 0.f));
+	void BuildLookAt(const azVector3& a_f3From, const azVector3& a_f3To, const azVector3& a_f3Up);
 
 
 	// \brief Transform a vector

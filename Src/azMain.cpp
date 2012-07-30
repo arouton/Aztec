@@ -1,5 +1,6 @@
 #include "azMain.h"
 #include "azIApplication.h"
+#include <windows.h>
 
 azMain* azMain::s_pMainInstance = NULL;
 
@@ -148,7 +149,7 @@ void azMain::CreateMainWindow()
 	oWindowClass.lpfnWndProc = azGlobalWindowProc;
 	oWindowClass.cbClsExtra = 0;
 	oWindowClass.cbWndExtra = 0;
-	oWindowClass.hInstance = m_hInstance;
+	oWindowClass.hInstance = (HINSTANCE)m_hInstance;
 	oWindowClass.hIcon = NULL;
 	oWindowClass.hCursor = 0;
 	oWindowClass.hbrBackground = 0;
@@ -159,9 +160,9 @@ void azMain::CreateMainWindow()
 	RegisterClassEx(&oWindowClass);
 
 	// Window creation
-	m_hWindow = CreateWindow(azL("Aztec"), azL("Prototype"), WS_OVERLAPPEDWINDOW , iLeft, iTop, iWidth, iHeight, NULL, NULL, m_hInstance, NULL);
+	m_hWindow = CreateWindow(azL("Aztec"), azL("Prototype"), WS_OVERLAPPEDWINDOW , iLeft, iTop, iWidth, iHeight, NULL, NULL, (HINSTANCE)m_hInstance, NULL);
 	azAssert(m_hWindow != NULL, "Couldn't create window");
-	ShowWindow(m_hWindow, SW_NORMAL);
+	ShowWindow((HWND)m_hWindow, SW_NORMAL);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -169,9 +170,9 @@ void azMain::CreateMainWindow()
 //----------------------------------------------------------------------------------------------------------------------
 void azMain::DestroyMainWindow()
 {
-    if (m_hWindow)
+    if (m_hWindow != NULL)
     {
-        DestroyWindow(m_hWindow);
-        UnregisterClass(azL("Aztec"), m_hInstance);
+        DestroyWindow((HWND)m_hWindow);
+        UnregisterClass(azL("Aztec"), (HINSTANCE)m_hInstance);
     }
 }

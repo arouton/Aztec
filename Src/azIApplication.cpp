@@ -14,12 +14,6 @@
 
 #include "File/azCrtFile.h"
 
-static double g_dOldTime = 0.f;
-static azFloat g_fTime = 0.f;
-
-static azUInt g_uFrameCount = 0;
-static azFloat g_fAverageDeltaTime = 0.f;
-
 struct azVertex
 {
     azFloat m_fX, m_fY, m_fZ;
@@ -32,6 +26,8 @@ struct azVertex
 //----------------------------------------------------------------------------------------------------------------------
 void azIApplication::Initialize()
 {
+    m_oTimer.Initialize();
+
     // \todo Registration function
     azClassManager::GrabInstance().Initialize();
     azTestObject& rObject = azFactory::GrabInstance().CreateObject<azTestObject>();
@@ -98,10 +94,6 @@ void azIApplication::Initialize()
     // Initialize projection matrix
 	azMatrix4x4 oProjectionMatrix;
 	oProjectionMatrix.BuildOrthoOffCenter(0.f, 0.f, 800.f, 600.f);
-
-    LARGE_INTEGER lpPerformanceCount;
-    BOOL bRes = QueryPerformanceCounter(&lpPerformanceCount);
-    g_dOldTime = double(lpPerformanceCount.QuadPart);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -109,22 +101,11 @@ void azIApplication::Initialize()
 //----------------------------------------------------------------------------------------------------------------------
 void azIApplication::Update()
 {
+    m_oTimer.Update();
+    azFloat fTime = m_oTimer.GetTime();
+
     azIRenderer& rRenderer = m_rRenderer.GetRef();
 	rRenderer.BeginScene();
-
-    LARGE_INTEGER lpFrequency;
-    BOOL bRes = QueryPerformanceFrequency(&lpFrequency);
-    LARGE_INTEGER lpPerformanceCount;
-    bRes = QueryPerformanceCounter(&lpPerformanceCount);
-
-    double dNewTime = double(lpPerformanceCount.QuadPart);
-    double dWindowsDeltaTime = (dNewTime - g_dOldTime) / double(lpFrequency.QuadPart);
-    azFloat fDeltaTime = azFloat(dWindowsDeltaTime);
-    g_dOldTime = dNewTime;
-    g_fTime += fDeltaTime;
-
-    g_fAverageDeltaTime = (g_uFrameCount * g_fAverageDeltaTime + fDeltaTime) / (g_uFrameCount + 1);
-    g_uFrameCount++;
 
 	// Temp
 	//azMatrix4x4 oLookAtMatrix;
@@ -136,15 +117,15 @@ void azIApplication::Update()
 
     // Translation
     azMatrix4x4 oTranslation;
-    oTranslation.BuildFromTranslate(1.f * cos(2.f * 3.14f * 0.1f * g_fTime), 0.f, -1.f);
+    oTranslation.BuildFromTranslate(1.f * cos(2.f * 3.14f * 0.1f * fTime), 0.f, -1.f);
 
     // Rotation
     azMatrix4x4 oRotationX;
-    oRotationX.BuildFromRotateX(2.f * 3.14f * 0.15f * g_fTime);
+    oRotationX.BuildFromRotateX(2.f * 3.14f * 0.15f * fTime);
     azMatrix4x4 oRotationY;
-    oRotationY.BuildFromRotateY(2.f * 3.14f * 0.1f * g_fTime);
+    oRotationY.BuildFromRotateY(2.f * 3.14f * 0.1f * fTime);
     azMatrix4x4 oRotationZ;
-    oRotationZ.BuildFromRotateZ(2.f * 3.14f * 0.2f * g_fTime);
+    oRotationZ.BuildFromRotateZ(2.f * 3.14f * 0.2f * fTime);
 
 	rRenderer.SetVertexBuffer(0, m_rVertexBuffer);
 	rRenderer.SetInputLayout(m_rInputLayout);
@@ -154,7 +135,7 @@ void azIApplication::Update()
     //rRenderer.SetTexture(m_rTexture);
 	
 	m_rVertexShader.GetRef().SetParameter(azL("a_mModelProjMatrix"), oRotationX * oRotationY * oRotationZ * oTranslation * oProjectionMatrix);
-    m_rVertexShader.GetRef().SetParameter(azL("a_fTime"), cos(2.f * 3.14f * 0.25f * g_fTime));
+    m_rVertexShader.GetRef().SetParameter(azL("a_fTime"), cos(2.f * 3.14f * 0.25f * fTime));
 	
 	rRenderer.Bind();
 	rRenderer.DrawPrimitives(azEPrimitiveType::eTriangleStrip, 0, 12);
@@ -178,6 +159,8 @@ void azIApplication::Terminate()
 
     rRenderer.Terminate();
     azDelete(rRenderer);
+
+    m_oTimer.Terminate();
 
     // \todo Registration function
     azClassManager::GrabInstance().Terminate();

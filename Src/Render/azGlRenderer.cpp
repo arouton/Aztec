@@ -6,8 +6,9 @@
 #include "Render/azGlShader.h"
 #include "Render/azGlTexture.h"
 #include "Math/azMatrix4x4.h"
-#include <Cg/cgGL.h>
 #include "Memory/azMemoryManager.h"
+#include <windows.h>
+#include <Cg/cgGL.h>
 
 //----------------------------------------------------------------------------------------------------------------------
 // OpenGL extensions
@@ -74,17 +75,17 @@ void azGlRenderer::Initialize()
 	};
 
 	// Get window and device context handles
-	m_hWindow = pMainInstance->GetWindow();
-	m_hDeviceContext = GetDC(m_hWindow);
+	m_hWindow = pMainInstance->GetWindowHandle();
+	m_hDeviceContext = GetDC((HWND)m_hWindow);
 
 	// Choose the best pixel format
-	azInt iFormat = ChoosePixelFormat(m_hDeviceContext, &oPixelDescriptor);
-	azBool bRet = (0 != SetPixelFormat(m_hDeviceContext, iFormat, &oPixelDescriptor));
+	azInt iFormat = ChoosePixelFormat((HDC)m_hDeviceContext, &oPixelDescriptor);
+	azBool bRet = (0 != SetPixelFormat((HDC)m_hDeviceContext, iFormat, &oPixelDescriptor));
 	azAssert(bRet, "Couldn't set pixel format");
 
 	// Create the best rendering context
-	m_hRenderingContext = wglCreateContext(m_hDeviceContext);
-	bRet = (0 != wglMakeCurrent(m_hDeviceContext, m_hRenderingContext));
+	m_hRenderingContext = wglCreateContext((HDC)m_hDeviceContext);
+	bRet = (0 != wglMakeCurrent((HDC)m_hDeviceContext, (HGLRC)m_hRenderingContext));
 	azAssert(bRet, "Couldn't create the rendering context");
 
 	// Load GL extensions
@@ -110,16 +111,16 @@ void azGlRenderer::Initialize()
 void azGlRenderer::Terminate()
 {
 	// Delete the rendering context
-	if (m_hRenderingContext)
+	if (m_hRenderingContext != NULL)
 	{
 		wglMakeCurrent(NULL, NULL);
-		wglDeleteContext(m_hRenderingContext);
+		wglDeleteContext((HGLRC)m_hRenderingContext);
 	}
 
 	// Free the device context
-	if (m_hWindow && m_hDeviceContext)
+	if ((m_hWindow != NULL) && (m_hDeviceContext!= NULL))
 	{
-		ReleaseDC(m_hWindow, m_hDeviceContext);
+		ReleaseDC((HWND)m_hWindow, (HDC)m_hDeviceContext);
 	}
 
 	azIRenderer::Terminate();
@@ -186,7 +187,7 @@ void azGlRenderer::BeginScene()
 //----------------------------------------------------------------------------------------------------------------------
 void azGlRenderer::EndScene()
 {
-	SwapBuffers(m_hDeviceContext); 
+	SwapBuffers((HDC)m_hDeviceContext); 
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -260,7 +261,7 @@ azITexture& azGlRenderer::CreateTexture(azImage const& a_rImage)
 //----------------------------------------------------------------------------------------------------------------------
 void azGlRenderer::Bind() const
 {
-	// Desactivate previous states
+	// Disable previous states
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_COLOR_ARRAY);
@@ -283,7 +284,6 @@ void azGlRenderer::Bind() const
     }
 
 	// Send vertex buffers to API
-
 	for (azUInt uStream = 0; uStream < 16; uStream++)
 	{
         azIGpuBuffer const* pIBuffer = m_apVertexBuffers[uStream];
@@ -339,7 +339,7 @@ void azGlRenderer::Bind() const
 						    glColorPointer(iGlSize, eGlType, uStride, (GLvoid*)uOffset);
 						    break;
 					    }
-					    // Texture coordonates
+					    // Texture coordinates
 					    case azESemanticType::eTexCoord :
 					    {
 						    GLuint uSemanticsIndex = rElement.m_uSemanticIndex;

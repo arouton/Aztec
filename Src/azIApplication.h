@@ -1,9 +1,9 @@
 #ifndef __azApplication__
 #define __azApplication__
 
-#include <windows.h>
 #include "azCommon.h"
 #include "Toolkit/azRef.h"
+#include "Toolkit/azTimer.h"
 
 class azIRenderer;
 class azIGpuBuffer;
@@ -37,6 +37,8 @@ private:
     azRef<azIShader> m_rVertexShader;
 	azRef<azIShader> m_rPixelShader;
     azRef<azITexture> m_rTexture;
+
+    azTimer m_oTimer;
 };
 
 #endif // __azApplication__
