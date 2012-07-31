@@ -92,7 +92,7 @@ void azGlRenderer::Initialize()
 	LoadExtensions();
 
 	// Default states
-	glClearColor(1.f, 1.f, 1.f, 1.f);
+	glClearColor(0.f, 0.f, 0.f, 0.f);
 	glClearDepth(1.0f);
 	glClearStencil(0);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
@@ -180,6 +180,9 @@ void azGlRenderer::LoadExtensions()
 void azGlRenderer::BeginScene()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    
+    //\todo Get the real window size
+    glViewport(0, 0, 800, 600);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

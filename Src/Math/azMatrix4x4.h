@@ -44,10 +44,13 @@ public :
 	// \brief Build a non-centered ortho matrix
 	void BuildOrthoOffCenter(azFloat a_fLeft, azFloat a_fTop, azFloat a_fRight, azFloat a_fBottom);
 
-	// Build a perspective projection matrix
-	void BuildPerspectiveFOV(azFloat a_fFov, azFloat a_fRatio, azFloat a_fNear, azFloat a_fFar);
+    // \brief Build a general perspective projection matrix
+    void BuildPerspectiveProjection(azFloat a_fLeft, azFloat a_fRight, azFloat a_fBottom, azFloat a_fTop, azFloat a_fNear, azFloat a_fFar);
 
-	// Build a look at matrix
+    // \brief Build a frustum-like perspective projection matrix
+    void BuildPerspectiveFOV(azFloat a_fFovY, azFloat a_fRatio, azFloat a_fNear, azFloat a_fFar);
+
+	// \brief Build a look at matrix
 	void BuildLookAt(const azVector3& a_f3From, const azVector3& a_f3To, const azVector3& a_f3Up);
 
 

@@ -196,7 +196,7 @@ inline void azMatrix4x4::BuildFromRotateZ(azFloat a_fAngle)
 //----------------------------------------------------------------------------------------------------------------------
 inline void azMatrix4x4::BuildOrthoOffCenter(azFloat a_fLeft, azFloat a_fTop, azFloat a_fRight, azFloat a_fBottom)
 {
-    m_fA11 = 2 / (a_fRight - a_fLeft);
+    m_fA11 = 2.f / (a_fRight - a_fLeft);
 	m_fA12 = 0.0f;               
 	m_fA13 = 0.0f; 
 	m_fA14 = (a_fLeft + a_fRight) / (a_fLeft - a_fRight);
@@ -220,31 +220,44 @@ inline void azMatrix4x4::BuildOrthoOffCenter(azFloat a_fLeft, azFloat a_fTop, az
 //----------------------------------------------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------------------------------------------
-inline void azMatrix4x4::BuildPerspectiveFOV(azFloat a_fFov, azFloat a_fRatio, azFloat a_fNear, azFloat a_fFar)
+inline void azMatrix4x4::BuildPerspectiveProjection(azFloat a_fLeft, azFloat a_fRight, azFloat a_fBottom, azFloat a_fTop, azFloat a_fNear, azFloat a_fFar)
 {
-    azFloat fYScale = 1.0f / std::tan(a_fFov / 2);
-    azFloat fXScale = fYScale / a_fRatio;
-    azFloat fCoeff  = a_fFar / (a_fFar - a_fNear);
-
-    m_fA11 = fXScale; 
-	m_fA12 = 0.0f;  
-	m_fA13 = 0.0f; 
-	m_fA14 = 0.0f;
+    m_fA11 = 2.f * a_fNear / (a_fRight - a_fLeft); 
+    m_fA12 = 0.0f;  
+    m_fA13 = 0.0f; 
+    m_fA14 = 0.0f;
 
     m_fA21 = 0.0f;  
-	m_fA22 = fYScale; 
-	m_fA23 = 0.0f; 
-	m_fA24 = 0.0f;
+    m_fA22 = 2.f * a_fNear / (a_fTop - a_fBottom); 
+    m_fA23 = 0.f; 
+    m_fA24 = 0.f;
 
-    m_fA31 = 0.0f; 
-	m_fA32 = 0.0f; 
-	m_fA33 = fCoeff;
-	m_fA34 = a_fNear * -fCoeff;
+    m_fA31 = (a_fRight + a_fLeft) / (a_fRight - a_fLeft); 
+    m_fA32 = (a_fTop + a_fBottom) / (a_fTop - a_fBottom); 
+    m_fA33 = -(a_fFar + a_fNear) / (a_fFar - a_fNear);
+    m_fA34 = -1.f;
 
-    m_fA41 = 0.0f; 
-	m_fA42 = 0.0f; 
-	m_fA43 = 1.0f;
-	m_fA44 = 0.0f;
+    m_fA41 = 0.f; 
+    m_fA42 = 0.f; 
+    m_fA43 = -2.f * a_fNear * a_fFar / (a_fFar - a_fNear);
+    m_fA44 = 0.f;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//----------------------------------------------------------------------------------------------------------------------
+inline void azMatrix4x4::BuildPerspectiveFOV(azFloat a_fFovY, azFloat a_fRatio, azFloat a_fNear, azFloat a_fFar)
+{
+    const azFloat fDegToRad = 3.14159265f / 180.f;
+
+    // Tangent of half a_fFovY
+    azFloat fTangent = std::tan(fDegToRad * a_fFovY / 2.f);
+    // Half height of near plane
+    azFloat fHeight = a_fNear * fTangent;
+    // Half width of near plane
+    azFloat fWidth = fHeight * a_fRatio;      
+
+    BuildPerspectiveProjection(-fWidth, fWidth, -fHeight, fHeight, a_fNear, a_fFar);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -288,9 +301,9 @@ inline void azMatrix4x4::BuildLookAt(const azVector3& a_f3From, const azVector3&
 //----------------------------------------------------------------------------------------------------------------------
 inline azVector3 azMatrix4x4::Transform(const azVector3& a_f3Operand, azFloat a_fW) const
 {
-    return azVector3(a_f3Operand.m_fX * m_fA11 + a_f3Operand.m_fY * m_fA21 + a_f3Operand.m_fZ * m_fA31 + a_fW * m_fA41,
-                     a_f3Operand.m_fX * m_fA12 + a_f3Operand.m_fY * m_fA22 + a_f3Operand.m_fZ * m_fA32 + a_fW * m_fA42,
-                     a_f3Operand.m_fX * m_fA13 + a_f3Operand.m_fY * m_fA23 + a_f3Operand.m_fZ * m_fA33 + a_fW * m_fA43);
+    return azVector3(a_f3Operand.m_fX * m_fA11 + a_f3Operand.m_fY * m_fA12 + a_f3Operand.m_fZ * m_fA13 + a_fW * m_fA14,
+                     a_f3Operand.m_fX * m_fA21 + a_f3Operand.m_fY * m_fA22 + a_f3Operand.m_fZ * m_fA23 + a_fW * m_fA24,
+                     a_f3Operand.m_fX * m_fA31 + a_f3Operand.m_fY * m_fA32 + a_f3Operand.m_fZ * m_fA33 + a_fW * m_fA34);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -298,10 +311,10 @@ inline azVector3 azMatrix4x4::Transform(const azVector3& a_f3Operand, azFloat a_
 //----------------------------------------------------------------------------------------------------------------------
 inline azVector4 azMatrix4x4::Transform(const azVector4& a_f4Operand) const
 {
-    return azVector4(a_f4Operand.m_fX * m_fA11 + a_f4Operand.m_fY * m_fA21 + a_f4Operand.m_fZ * m_fA31 + a_f4Operand.m_fW * m_fA41,
-                     a_f4Operand.m_fX * m_fA12 + a_f4Operand.m_fY * m_fA22 + a_f4Operand.m_fZ * m_fA32 + a_f4Operand.m_fW * m_fA42,
-                     a_f4Operand.m_fX * m_fA13 + a_f4Operand.m_fY * m_fA23 + a_f4Operand.m_fZ * m_fA33 + a_f4Operand.m_fW * m_fA43,
-                     a_f4Operand.m_fX * m_fA14 + a_f4Operand.m_fY * m_fA24 + a_f4Operand.m_fZ * m_fA34 + a_f4Operand.m_fW * m_fA44);
+    return azVector4(a_f4Operand.m_fX * m_fA11 + a_f4Operand.m_fY * m_fA12 + a_f4Operand.m_fZ * m_fA13 + a_f4Operand.m_fW * m_fA14,
+                     a_f4Operand.m_fX * m_fA21 + a_f4Operand.m_fY * m_fA22 + a_f4Operand.m_fZ * m_fA23 + a_f4Operand.m_fW * m_fA24,
+                     a_f4Operand.m_fX * m_fA31 + a_f4Operand.m_fY * m_fA32 + a_f4Operand.m_fZ * m_fA33 + a_f4Operand.m_fW * m_fA34,
+                     a_f4Operand.m_fX * m_fA41 + a_f4Operand.m_fY * m_fA42 + a_f4Operand.m_fZ * m_fA43 + a_f4Operand.m_fW * m_fA44);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

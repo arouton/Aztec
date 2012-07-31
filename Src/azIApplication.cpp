@@ -18,7 +18,7 @@ struct azVertex
 {
     azFloat m_fX, m_fY, m_fZ;
     azUInt m_uColor;
-    azFloat m_fU, m_fV;
+    //azFloat m_fU, m_fV;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -37,30 +37,39 @@ void azIApplication::Initialize()
     m_rRenderer = rRenderer;
 	rRenderer.Initialize();
 
-	azVertex aVertices[] =
-	{
-		{-1.f, -1.f, -1.f, 0xFFFF0000, 0.f, 0.f},
-		{ 1.f, -1.f, -1.f, 0xFF00FF00, 3.f, 0.f},
-		{-1.f,  1.f, -1.f, 0xFF0000FF, 0.f, 3.f},
-		{ 1.f,  1.f, -1.f, 0xFFFFFFFF, 3.f, 3.f},
-        {-1.f, -1.f, 1.f, 0xFFFF0000, 0.f, 0.f},
-        { 1.f, -1.f, 1.f, 0xFF00FF00, 3.f, 0.f},
-        { 1.f,  1.f, 1.f, 0xFFFFFFFF, 3.f, 3.f},
-        {-1.f,  1.f, 1.f, 0xFF0000FF, 0.f, 3.f}
-	};
-
-	m_rVertexBuffer = rRenderer.CreateVertexBuffer(8 * sizeof(azVertex), azEBufferType::eStatic);
-	m_rVertexBuffer.GetRef().Fill(aVertices, 8 * sizeof(azVertex));
+    //azVertex aVertices[] =
+    //{
+    //    {-1.f, -1.f, -1.f, 0xFFFF0000, 0.f, 0.f},
+    //    { 1.f, -1.f, -1.f, 0xFF00FF00, 3.f, 0.f},
+    //    {-1.f,  1.f, -1.f, 0xFF0000FF, 0.f, 3.f},
+    //    { 1.f,  1.f, -1.f, 0xFFFFFFFF, 3.f, 3.f},
+    //    {-1.f, -1.f, 1.f, 0xFFFF0000, 0.f, 0.f},
+    //    { 1.f, -1.f, 1.f, 0xFF00FF00, 3.f, 0.f},
+    //    { 1.f,  1.f, 1.f, 0xFFFFFFFF, 3.f, 3.f},
+    //    {-1.f,  1.f, 1.f, 0xFF0000FF, 0.f, 3.f}
+    //};
+    azVertex aVertices[] =
+    {
+        { 0.f, 0.f, 0.f, 0xFFFF0000},
+        { 1.f, 0.f, 0.f, 0xFFFF0000},
+        { 0.f, 0.f, 0.f, 0xFF00FF00},
+        { 0.f, 1.f, 0.f, 0xFF00FF00},
+        { 0.f, 0.f, 0.f, 0xFF0000FF},
+        { 0.f, 0.f, 1.f, 0xFF0000FF},
+    };
+	m_rVertexBuffer = rRenderer.CreateVertexBuffer(6 * sizeof(azVertex), azEBufferType::eStatic);
+	m_rVertexBuffer.GetRef().Fill(aVertices, 6 * sizeof(azVertex));
 
 	m_rInputLayout = rRenderer.CreateInputLayout();
 	m_rInputLayout.GetRef().AddElement(0, azInputLayoutElement(azESemanticType::ePosition, 0, azEFormatType::eFloat3, sizeof(azVertex), 0));
 	m_rInputLayout.GetRef().AddElement(0, azInputLayoutElement(azESemanticType::eDiffuse, 0, azEFormatType::eColor, sizeof(azVertex), 3*sizeof(azFloat)));
-    m_rInputLayout.GetRef().AddElement(0, azInputLayoutElement(azESemanticType::eTexCoord, 0, azEFormatType::eFloat2, sizeof(azVertex), 3*sizeof(azFloat) + sizeof(azUInt32)));
+    //m_rInputLayout.GetRef().AddElement(0, azInputLayoutElement(azESemanticType::eTexCoord, 0, azEFormatType::eFloat2, sizeof(azVertex), 3*sizeof(azFloat) + sizeof(azUInt32)));
 
-    azUInt aIndices[] = {3, 2, 6, 7, 4, 2, 0, 3, 1, 6, 5, 4, 1, 0};
+    //azUInt aIndices[] = {3, 2, 6, 7, 4, 2, 0, 3, 1, 6, 5, 4, 1, 0};
+    azUInt aIndices[] = {0, 1, 2, 3, 4, 5};
 
-    m_rIndexBuffer = rRenderer.CreateIndexBuffer(14 * sizeof(azUInt), azEBufferType::eStatic);
-    m_rIndexBuffer.GetRef().Fill(aIndices, 14 * sizeof(azUInt));
+    m_rIndexBuffer = rRenderer.CreateIndexBuffer(6 * sizeof(azUInt), azEBufferType::eStatic);
+    m_rIndexBuffer.GetRef().Fill(aIndices, 6 * sizeof(azUInt));
 
     azCrtFile oVertexShaderFile;
     oVertexShaderFile.Open(azFilePath(azL("Shaders\\Simple.vcg")), azFileOpenParams(azEReadWriteMode::eRead, azECreateMode::eOpenExisting));
@@ -90,10 +99,6 @@ void azIApplication::Initialize()
     oImage.Initialize();
     m_rTexture = rRenderer.CreateTexture(oImage);
     oImage.Terminate();
-
-    // Initialize projection matrix
-	azMatrix4x4 oProjectionMatrix;
-	oProjectionMatrix.BuildOrthoOffCenter(0.f, 0.f, 800.f, 600.f);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -109,23 +114,23 @@ void azIApplication::Update()
 
 	// Temp
 	//azMatrix4x4 oLookAtMatrix;
-    //oLookAtMatrix.BuildLookAt(azVector3(0.f, 0.f, 25.f), azVector3(0.f, 0.f, 0.f), azVector3(0.f, 0.f, 1.f));
+    //oLookAtMatrix.BuildLookAt(azVector3(2.f * cos(2.f * 3.14f * 0.15f * fTime), 2.f * sin(2.f * 3.14f * 0.15f * fTime), 0.5f), azVector3(0.f, 0.f, -1.f), azVector3(0.f, 0.f, 1.f));
     azMatrix4x4 oProjectionMatrix;
-    //oProjectionMatrix.BuildPerspectiveFOV(90.f, 1.f, 0.1f, 100.f);
+    oProjectionMatrix.BuildPerspectiveFOV(90.f, 1.f, 0.1f, 100.f);
     //oProjectionMatrix = oProjectionMatrix * oLookAtMatrix;
-    oProjectionMatrix.BuildOrthoOffCenter(-2.f, -2.f, 2.f, 2.f);
+    //oProjectionMatrix.BuildOrthoOffCenter(-2.f, 2.f, 2.f, -2.f);
 
-    // Translation
+    //// Translation
     azMatrix4x4 oTranslation;
-    oTranslation.BuildFromTranslate(1.f * cos(2.f * 3.14f * 0.1f * fTime), 0.f, -1.f);
-
-    // Rotation
-    azMatrix4x4 oRotationX;
-    oRotationX.BuildFromRotateX(2.f * 3.14f * 0.15f * fTime);
-    azMatrix4x4 oRotationY;
-    oRotationY.BuildFromRotateY(2.f * 3.14f * 0.1f * fTime);
-    azMatrix4x4 oRotationZ;
-    oRotationZ.BuildFromRotateZ(2.f * 3.14f * 0.2f * fTime);
+    oTranslation.BuildFromTranslate(0.f, 0.f, 2.f);
+    //// Rotation
+    //azMatrix4x4 oRotationX;
+    //oRotationX.BuildFromRotateX(2.f * 3.14f * 0.15f * fTime);
+    //azMatrix4x4 oRotationY;
+    //oRotationY.BuildFromRotateY(2.f * 3.14f * 0.1f * fTime);
+    //azMatrix4x4 oRotationZ;
+    //oRotationZ.BuildFromRotateZ(2.f * 3.14f * 0.2f * fTime);
+    //azMatrix4x4 oRotation = oTranslation * oRotationX * oRotationY * oRotationZ;
 
 	rRenderer.SetVertexBuffer(0, m_rVertexBuffer);
 	rRenderer.SetInputLayout(m_rInputLayout);
@@ -134,11 +139,17 @@ void azIApplication::Update()
 	rRenderer.SetPixelShader(m_rPixelShader);
     //rRenderer.SetTexture(m_rTexture);
 	
-	m_rVertexShader.GetRef().SetParameter(azL("a_mModelProjMatrix"), oRotationX * oRotationY * oRotationZ * oTranslation * oProjectionMatrix);
-    m_rVertexShader.GetRef().SetParameter(azL("a_fTime"), cos(2.f * 3.14f * 0.25f * fTime));
+	m_rVertexShader.GetRef().SetParameter(azL("a_mModelProjMatrix"), oTranslation * oProjectionMatrix);
+
+    azVector4 v(0.f, 0.f, 0.f);
+    v = oTranslation.Transform(v);
+    v = oProjectionMatrix.Transform(v);
+
+
+    //m_rVertexShader.GetRef().SetParameter(azL("a_fTime"), cos(2.f * 3.14f * 0.25f * fTime));
 	
 	rRenderer.Bind();
-	rRenderer.DrawPrimitives(azEPrimitiveType::eTriangleStrip, 0, 12);
+	rRenderer.DrawPrimitives(azEPrimitiveType::eLineList, 0, 6);
 	
 	rRenderer.EndScene();
 }

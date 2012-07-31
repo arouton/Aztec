@@ -12,7 +12,7 @@ struct azOutput
 	float2 m_f2TexCoord0 : TEXCOORD0;
 };
 
-azOutput main(azInput a_oInput, uniform float4x4 a_mModelProjMatrix, uniform float a_fTime)
+azOutput main(azInput a_oInput, uniform float4x4 a_mModelProjMatrix)
 {	
 	azOutput oOutput;
 
