@@ -113,6 +113,7 @@
     <ClInclude Include="..\Src\File\azCrtFile.h" />
     <ClInclude Include="..\Src\File\azFilePath.h" />
     <ClInclude Include="..\Src\File\azIFile.h" />
+    <ClInclude Include="..\Src\Math\azMath.h" />
     <ClInclude Include="..\Src\Math\azMatrix4x4.h" />
     <ClInclude Include="..\Src\Math\azVector3.h" />
     <ClInclude Include="..\Src\Math\azVector4.h" />

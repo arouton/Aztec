@@ -30,6 +30,10 @@ public:
 	// \brief Get Window handle
 	azWinHandle GetWindowHandle() { return m_hWindow; }
 
+    azFloat m_fX;
+    azFloat m_fY;
+    azFloat m_fZ;
+
 private:
 	// \brief Create main window
 	void CreateMainWindow();

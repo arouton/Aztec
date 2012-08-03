@@ -56,7 +56,7 @@ inline void azVector3::SelfNormalize()
 //----------------------------------------------------------------------------------------------------------------------
 inline azVector3 azVector3::operator +() const
 {
-    return *this;
+    return rThis;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -92,7 +92,7 @@ inline const azVector3& azVector3::operator +=(const azVector3& a_f3Operand)
     m_fY += a_f3Operand.m_fY;
     m_fZ += a_f3Operand.m_fZ;
 
-    return *this;
+    return rThis;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -120,7 +120,7 @@ inline const azVector3& azVector3::operator -=(const azVector3& a_f3Operand)
     m_fY -= a_f3Operand.m_fY;
     m_fZ -= a_f3Operand.m_fZ;
 
-    return *this;
+    return rThis;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -132,7 +132,7 @@ inline const azVector3& azVector3::operator *=(azFloat a_fOperand)
     m_fY *= a_fOperand;
     m_fZ *= a_fOperand;
 
-    return *this;
+    return rThis;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -144,7 +144,7 @@ inline const azVector3& azVector3::operator /=(azFloat a_fOperand)
     m_fY /= a_fOperand;
     m_fZ /= a_fOperand;
 
-    return *this;
+    return rThis;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -162,7 +162,7 @@ inline bool azVector3::operator ==(const azVector3& a_f3Operand) const
 //----------------------------------------------------------------------------------------------------------------------
 inline bool azVector3::operator !=(const azVector3& a_f3Operand) const
 {
-    return !(*this == a_f3Operand);
+    return !(rThis == a_f3Operand);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

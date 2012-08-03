@@ -31,7 +31,7 @@ azMetaClass const& azMetaClass::operator =(azMetaClass const& a_rSource)
     m_uSize = a_rSource.m_uSize;
     m_pfnConstructor = a_rSource.m_pfnConstructor;
     m_pfnDestructor = a_rSource.m_pfnDestructor;
-    return *this;
+    return rThis;
 }
 
 //-------------------------------------------------------------------------------------------------------

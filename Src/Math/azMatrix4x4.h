@@ -17,14 +17,17 @@ public :
 		azFloat a_fA31 = 0.0f, azFloat a_fA32 = 0.0f, azFloat a_fA33 = 1.0f, azFloat a_fA34 = 0.0f,
 		azFloat a_fA41 = 0.0f, azFloat a_fA42 = 0.0f, azFloat a_fA43 = 0.0f, azFloat a_fA44 = 1.0f);
 
+    // \brief Constructor
+    azMatrix4x4(azVector4 a_f4Row0, azVector4 a_f4Row1, azVector4 a_f4Row2, azVector4 a_f4Row3);
+
 	// \brief Set matrix to identity
 	void SetIdentity();
 
-	// \brief compute the determinant
-	azFloat GetDeterminant() const;
-
 	// \brief Get transpose matrix
 	azMatrix4x4 GetTranspose() const;
+
+    // \brief compute the determinant
+    azFloat GetDeterminant() const;
 
 	// \brief Get inverse matrix
 	azMatrix4x4 GetInverse() const;
@@ -42,7 +45,7 @@ public :
 	void BuildFromRotateZ(azFloat a_fAngle);
 	
 	// \brief Build a non-centered ortho matrix
-	void BuildOrthoOffCenter(azFloat a_fLeft, azFloat a_fTop, azFloat a_fRight, azFloat a_fBottom);
+	void BuildOrthoOffCenter(azFloat a_fLeft, azFloat a_fTop, azFloat a_fRight, azFloat a_fBottom, azFloat a_fNear, azFloat a_fFar);
 
     // \brief Build a general perspective projection matrix
     void BuildPerspectiveProjection(azFloat a_fLeft, azFloat a_fRight, azFloat a_fBottom, azFloat a_fTop, azFloat a_fNear, azFloat a_fFar);
@@ -95,18 +98,10 @@ public :
 	operator azFloat*();
 	operator const azFloat*() const;
 
-
-	// First row
-	azFloat m_fA11, m_fA21, m_fA31, m_fA41;
-	
-	// Second row
-	azFloat m_fA12, m_fA22, m_fA32, m_fA42;
-	
-	// Third row
-	azFloat m_fA13, m_fA23, m_fA33, m_fA43;
-	
-	// Fourth row
-	azFloat m_fA14, m_fA24, m_fA34, m_fA44;
+    azVector4 m_f4Row0;
+    azVector4 m_f4Row1;
+    azVector4 m_f4Row2;
+    azVector4 m_f4Row3;
 };
 
 azMatrix4x4 operator *(azFloat a_fOperand1, const azMatrix4x4& a_rOperand2);

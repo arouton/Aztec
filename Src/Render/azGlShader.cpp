@@ -41,5 +41,6 @@ void azGlShader::SetParameter(azSz a_szName, azVector4 const& a_rf4Value)
 //----------------------------------------------------------------------------------------------------------------------
 void azGlShader::SetParameter(azSz a_szName, azMatrix4x4 const& a_rValue)
 {
-	cgGLSetMatrixParameterfc(GetParameter(a_szName), (const azFloat *)a_rValue);
+    azMatrix4x4 oTransposedMatrix = a_rValue.GetTranspose();
+	cgGLSetMatrixParameterfc(GetParameter(a_szName), (const azFloat *)oTransposedMatrix);
 }

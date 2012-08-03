@@ -14,6 +14,8 @@
 
 #include "File/azCrtFile.h"
 
+#include "azMain.h"
+
 struct azVertex
 {
     azFloat m_fX, m_fY, m_fZ;
@@ -112,17 +114,71 @@ void azIApplication::Update()
     azIRenderer& rRenderer = m_rRenderer.GetRef();
 	rRenderer.BeginScene();
 
+    {
+        azMatrix4x4 oProjectionMatrix;
+        //azFloat fLeft = -10.f;
+        //azFloat fRight = 12.f;
+        //azFloat fBottom = -5.f;
+        //azFloat fTop = 7.f;
+        //azFloat fNear = 4.f;
+        //azFloat fFar = 100.f;
+        azFloat fLeft = -10.f;
+        azFloat fRight = 10.f;
+        azFloat fBottom = -15.f;
+        azFloat fTop = 15.f;
+        azFloat fNear = 10.f;
+        azFloat fFar = 100.f;
+        oProjectionMatrix.BuildPerspectiveProjection(fLeft, fRight, fBottom, fTop, fNear, fFar);
+        
+        azVector4 f4Vector;
+        azVector4 f4VectorRes;
+
+        f4Vector.Set(0.f, 0.f, -fNear, 1.f);
+        f4VectorRes = oProjectionMatrix.Transform(f4Vector);
+        f4VectorRes /= f4VectorRes.m_fW;
+        azAssert(f4VectorRes == azVector4(0.f, 0.f, -1.f, 1.f), "UTest failed");
+
+        f4Vector.Set(0.f, 0.f, -fFar, 1.f);
+        f4VectorRes = oProjectionMatrix.Transform(f4Vector);
+        f4VectorRes /= f4VectorRes.m_fW;
+        azAssert(f4VectorRes == azVector4(0.f, 0.f, 1.f, 1.f), "UTest failed");
+
+        f4Vector.Set(0.f, 0.f, fNear, 1.f);
+        f4VectorRes = oProjectionMatrix.Transform(f4Vector);
+
+        f4Vector.Set(0.f, 0.f, fFar, 1.f);
+        f4VectorRes = oProjectionMatrix.Transform(f4Vector);
+
+        f4Vector.Set(fLeft, fBottom, fNear, 1.f);
+        f4VectorRes = oProjectionMatrix.Transform(f4Vector);
+
+        f4Vector.Set(fRight, fTop, fNear, 1.f);
+        f4VectorRes = oProjectionMatrix.Transform(f4Vector);
+
+        f4Vector.Set(fLeft, fBottom, fFar, 1.f);
+        f4VectorRes = oProjectionMatrix.Transform(f4Vector);
+
+        f4Vector.Set(fRight, fTop, fFar, 1.f);
+        f4VectorRes = oProjectionMatrix.Transform(f4Vector);
+    }
+
+
+
 	// Temp
-	//azMatrix4x4 oLookAtMatrix;
-    //oLookAtMatrix.BuildLookAt(azVector3(2.f * cos(2.f * 3.14f * 0.15f * fTime), 2.f * sin(2.f * 3.14f * 0.15f * fTime), 0.5f), azVector3(0.f, 0.f, -1.f), azVector3(0.f, 0.f, 1.f));
     azMatrix4x4 oProjectionMatrix;
-    oProjectionMatrix.BuildPerspectiveFOV(90.f, 1.f, 0.1f, 100.f);
+    oProjectionMatrix.BuildPerspectiveFOV(90.f, 800.f/600.f, 0.1f, 100.f);
     //oProjectionMatrix = oProjectionMatrix * oLookAtMatrix;
     //oProjectionMatrix.BuildOrthoOffCenter(-2.f, 2.f, 2.f, -2.f);
 
     //// Translation
     azMatrix4x4 oTranslation;
-    oTranslation.BuildFromTranslate(0.f, 0.f, 2.f);
+    oTranslation.BuildFromTranslate(azMain::GetInstance()->m_fX, azMain::GetInstance()->m_fY, azMain::GetInstance()->m_fZ - 2.f);
+    //oTranslation.BuildFromTranslate(0.f, 0.0f, -2.f);
+
+    azMatrix4x4 oLookAtMatrix;
+    //cos(2.f * 3.14f * 0.15f * fTime), sin(2.f * 3.14f * 0.15f * fTime)
+    oLookAtMatrix.BuildLookAt(azVector3(0.5f * cos(2.f * 3.14f * 0.15f * fTime), 0.5f * sin(2.f * 3.14f * 0.15f * fTime), 10.f), azVector3(0.f, 0.f, 11.f), azVector3(0.f, 1.f, 0.f));
+
     //// Rotation
     //azMatrix4x4 oRotationX;
     //oRotationX.BuildFromRotateX(2.f * 3.14f * 0.15f * fTime);
@@ -134,12 +190,12 @@ void azIApplication::Update()
 
 	rRenderer.SetVertexBuffer(0, m_rVertexBuffer);
 	rRenderer.SetInputLayout(m_rInputLayout);
-    rRenderer.SetIndexBuffer(m_rIndexBuffer, 4);
+    rRenderer.SetIndexBuffer(m_rIndexBuffer, 6);
 	rRenderer.SetVertexShader(m_rVertexShader);
 	rRenderer.SetPixelShader(m_rPixelShader);
     //rRenderer.SetTexture(m_rTexture);
 	
-	m_rVertexShader.GetRef().SetParameter(azL("a_mModelProjMatrix"), oTranslation * oProjectionMatrix);
+	m_rVertexShader.GetRef().SetParameter(azL("a_mModelProjMatrix"), oProjectionMatrix * oLookAtMatrix);
 
     azVector4 v(0.f, 0.f, 0.f);
     v = oTranslation.Transform(v);

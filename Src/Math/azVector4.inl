@@ -59,7 +59,7 @@ inline void azVector4::SelfNormalize()
 //----------------------------------------------------------------------------------------------------------------------
 inline azVector4 azVector4::operator +() const
 {
-    return *this;
+    return rThis;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -96,7 +96,7 @@ inline const azVector4& azVector4::operator +=(const azVector4& a_f4Operand)
     m_fZ += a_f4Operand.m_fZ;
     m_fW += a_f4Operand.m_fW;
 
-    return *this;
+    return rThis;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -109,7 +109,7 @@ inline const azVector4& azVector4::operator -=(const azVector4& a_f4Operand)
     m_fZ -= a_f4Operand.m_fZ;
     m_fW -= a_f4Operand.m_fW;
 
-    return *this;
+    return rThis;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -138,7 +138,7 @@ inline const azVector4& azVector4::operator *=(azFloat a_fOperand)
     m_fZ *= a_fOperand;
     m_fW *= a_fOperand;
 
-    return *this;
+    return rThis;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -151,7 +151,7 @@ inline const azVector4& azVector4::operator /=(azFloat a_fOperand)
     m_fZ /= a_fOperand;
     m_fW /= a_fOperand;
 
-    return *this;
+    return rThis;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -170,7 +170,7 @@ inline bool azVector4::operator ==(const azVector4& a_f4Operand) const
 //----------------------------------------------------------------------------------------------------------------------
 inline bool azVector4::operator !=(const azVector4& a_f4Operand) const
 {
-    return !(*this == a_f4Operand);
+    return !(rThis == a_f4Operand);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

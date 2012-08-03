@@ -175,6 +175,9 @@
     <ClInclude Include="..\Src\Toolkit\azTimer.h">
       <Filter>Toolkit</Filter>
     </ClInclude>
+    <ClInclude Include="..\Src\Math\azMath.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Src\Render\azGlGpuBuffer.inl">

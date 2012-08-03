@@ -62,7 +62,7 @@ azClassId const& azClassId::operator =(azClassId const& a_rSource)
 {
     m_uId = a_rSource.m_uId;
     m_szName = a_rSource.m_szName;
-    return *this;
+    return rThis;
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ bool azClassId::operator ==(azClassId const& a_rSource) const
 //-------------------------------------------------------------------------------------------------------
 bool azClassId::operator !=(azClassId const& a_rSource) const
 {
-    return (!(*this == a_rSource));
+    return (!(rThis == a_rSource));
 }
 
 //-------------------------------------------------------------------------------------------------------

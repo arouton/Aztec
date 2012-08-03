@@ -9,6 +9,8 @@
 
 #define AZ_BUILD_WINDOWS 1
 
+#define rThis *this
+
 typedef long azInt;
 typedef unsigned long azUInt;
 typedef float azFloat;

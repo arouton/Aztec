@@ -29,21 +29,51 @@ LRESULT CALLBACK azGlobalWindowProc(HWND a_hWindow, UINT a_uMessage, WPARAM a_WP
 		// Key stroke
 		case WM_KEYDOWN:
 		{
-			switch (LOWORD(a_WParam))
-			{
-				// Escape : exit
-				case VK_ESCAPE:
-				{
-					azMain* pMainInstance = azMain::GetInstance();
-					azAssert(pMainInstance != NULL, "Main has no instance");
-					pMainInstance->RequestExit();
-					break;
-				}
-				case VK_F1 :
-				{
-					break;
-				}
-			}
+            switch (LOWORD(a_WParam))
+            {
+                // Escape : exit
+            case VK_ESCAPE:
+                {
+                    azMain* pMainInstance = azMain::GetInstance();
+                    azAssert(pMainInstance != NULL, "Main has no instance");
+                    pMainInstance->RequestExit();
+                    break;
+                }
+            case VK_F1 :
+                {
+                    break;
+                }
+            case VK_UP :
+                {
+                    azMain::GetInstance()->m_fX += 0.1f;
+                    break;
+                }
+            case VK_DOWN :
+                {
+                    azMain::GetInstance()->m_fX -= 0.1f;
+                    break;
+                }
+            case VK_LEFT :
+                {
+                    azMain::GetInstance()->m_fY += 0.1f;
+                    break;
+                }
+            case VK_RIGHT :
+                {
+                    azMain::GetInstance()->m_fY -= 0.1f;
+                    break;
+                }
+            case VK_HOME :
+                {
+                    azMain::GetInstance()->m_fZ += 0.1f;
+                    break;
+                }
+            case VK_END :
+                {
+                    azMain::GetInstance()->m_fZ -= 0.1f;
+                    break;
+                }
+            }
 			return 0;
 		}
 
@@ -66,6 +96,9 @@ azMain::azMain()
 	, m_pApplication(NULL)
 	, m_hInstance(NULL)
 	, m_hWindow(NULL)
+    , m_fX(0.f)
+    , m_fY(0.f)
+    , m_fZ(0.f)
 {
 	azAssert(s_pMainInstance == NULL, "Main has already an instance");
 	s_pMainInstance = this;
